@@ -25,7 +25,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const router = useRouter();
-  const {isSignedIn} = useAuth();
+  const { isSignedIn } = useAuth();
   const [isSubmitting, setisSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const { signIn, isLoaded, setActive } = useSignIn();
@@ -42,7 +42,7 @@ export function LoginForm({
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    if(isSignedIn) router.push("/");
+    if (isSignedIn) router.push("/");
     if (!isLoaded) return;
     setisSubmitting(true);
     setAuthError(null);
@@ -128,7 +128,7 @@ export function LoginForm({
                 </Button>
               </div>
               <div className="text-center text-sm">
-              Don&apos;t have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <span
                   onClick={() => router.push("/signup")}
                   className="underline underline-offset-4 cursor-pointer"

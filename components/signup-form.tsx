@@ -41,7 +41,7 @@ export function SignUpForm({
   ...props
 }: React.ComponentProps<"div">) {
   const router = useRouter();
-  const {isSignedIn} = useAuth();
+  const { isSignedIn } = useAuth();
   const { signUp, isLoaded, setActive } = useSignUp();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -66,7 +66,7 @@ export function SignUpForm({
   });
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
-    if(isSignedIn) router.push("/");
+    if (isSignedIn) router.push("/");
     if (!isLoaded) return;
     setIsSubmitting(true);
     setAuthError(null);
@@ -271,6 +271,11 @@ export function SignUpForm({
                   {isSubmitting ? "Creating account..." : "Create Account"}
                 </Button>
               </div>
+              {isSubmitting && (
+                <div className="flex justify-center-safe">
+                  <div id="clerk-captcha" />
+                </div>
+              )}
               <div className="text-center text-sm">
                 Already have an account?{" "}
                 <span
