@@ -11,10 +11,12 @@ export interface Image {
   src: string;
   alt: string;
   fileId: string;
+  fileWidth: number;
+  fileHeight: number;
 }
 
 const Index = () => {
-  const [images, setImages] = useState<Image[] >([]);
+  const [images, setImages] = useState<Image[]>([]);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   useEffect(() => {
@@ -57,6 +59,8 @@ const Index = () => {
       src: uploadResponse.url || URL.createObjectURL(file),
       alt: file.name,
       fileId: uploadResponse.fileId!,
+      fileWidth: uploadResponse.width!,
+      fileHeight: uploadResponse.height!,
     };
 
     setImages([newImage, ...images]);
@@ -68,22 +72,20 @@ const Index = () => {
       <Header onUploadClick={handleUploadClick} />
 
       <main className="flex-1 flex flex-col">
-  {images && images.length > 0 ? (
-    <ImageGallery images={images} setImages={setImages} />
-  ) : (
-    <div className="flex flex-col items-center justify-center text-gray-500 h-64">
-      <p className="font-semibold">Nothing to show here yet.</p>
-      <button
-        onClick={handleUploadClick}
-        className="mt-2 text-blue-500 hover:underline"
-      >
-        Upload your first image
-      </button>
-    </div>
-  )}
-</main>
-
-
+        {images && images.length > 0 ? (
+          <ImageGallery images={images} setImages={setImages} />
+        ) : (
+          <div className="flex flex-col items-center justify-center text-gray-500 h-64">
+            <p className="font-semibold">Nothing to show here yet.</p>
+            <button
+              onClick={handleUploadClick}
+              className="mt-2 text-blue-500 hover:underline"
+            >
+              Upload your first image
+            </button>
+          </div>
+        )}
+      </main>
       <UploadModal
         isOpen={isUploadModalOpen}
         onClose={() => setIsUploadModalOpen(false)}

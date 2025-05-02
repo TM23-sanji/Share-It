@@ -7,6 +7,8 @@ interface ImageGalleryProps {
     src: string;
     alt: string;
     fileId: string;
+    fileWidth: number;
+    fileHeight: number;
   }>;
   setImages: React.Dispatch<React.SetStateAction<any>>;
 }
@@ -22,6 +24,8 @@ const ImageGallery = ({ images, setImages }: ImageGalleryProps) => {
                 src={image.src}
                 alt={image.alt}
                 fileId={image.fileId}
+                fileWidth={image.fileWidth}
+                fileHeight={image.fileHeight}
                 setImages={setImages}
               />
             </div>

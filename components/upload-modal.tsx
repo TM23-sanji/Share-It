@@ -25,8 +25,8 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (!file.type.includes("image/")) {
-        toast.error("Please select an image file");
+      if (!file.type.includes("image/") && !file.type.includes("video/")) {
+        toast.error("Please select an image or video file");
         return;
       }
       
@@ -43,8 +43,8 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
     if (file) {
-      if (!file.type.includes("image/")) {
-        toast.error("Please select an image file");
+      if (!file.type.includes("image/") && !file.type.includes("video/")) {
+        toast.error("Please select an image or video file");
         return;
       }
       
@@ -72,7 +72,7 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Upload Image</DialogTitle>
+          <DialogTitle>Upload Image or Video</DialogTitle>
         </DialogHeader>
         
         <div 
@@ -92,7 +92,7 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
           ) : (
             <div className="flex flex-col items-center justify-center text-gray-500 cursor-pointer">
               <Image className="h-16 w-16 mb-2" />
-              <p className="text-sm">Click to browse or drag an image here</p>
+              <p className="text-sm">Click to browse or drag an image or video here</p>
             </div>
           )}
           <input

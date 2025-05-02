@@ -19,6 +19,8 @@ export async function GET() {
         src: file.url,
         alt: file.name,
         fileId: file.fileId,
+        fileWidth: file.width,
+        fileHeight: file.height,
       }));
     return NextResponse.json(images);
   } catch (error) {
