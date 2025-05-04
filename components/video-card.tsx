@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Heart,
-  Image,
   MessageSquare,
   Share,
   Trash,
@@ -11,29 +10,33 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import type { Image as ImageType } from "@/app/page";
+import type { Video as VideoType } from "@/app/page";
 
-interface ImageCardProps {
+interface VideoCardProps {
   src: string;
-  alt: string;
+  alt:string
   fileId: string;
   fileWidth: number;
   fileHeight: number;
+  size: number,
+  thumbnail: string,
   onClick?: () => void; 
-  setImages: React.Dispatch<React.SetStateAction<any>>;
-  fetchFiles: () => void;
+  setVideos: React.Dispatch<React.SetStateAction<any>>;
+  fetchFiles: ()=>void;
 }
 
-const ImageCard = ({
+const VideoCard = ({
   src,
   alt,
+  size,
+  thumbnail,
   fileId,
   fileWidth,
   fileHeight,
   onClick,
-  setImages,
-  fetchFiles,
-}: ImageCardProps) => {
+  setVideos,
+  fetchFiles
+}: VideoCardProps) => {
   const [liked, setLiked] = useState(false);
 
   const handleLike = (e: React.MouseEvent) => {
@@ -60,15 +63,15 @@ const ImageCard = ({
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = blobUrl;
-      a.download = filename || "image";
+      a.download = filename || "video";
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(blobUrl);
-      toast.success("Image downloaded successfully");
+      toast.success("Video downloaded successfully");
     } catch (error) {
-      console.error("Error downloading image:", error);
-      toast.error("Failed to download image"); 
+      console.error("Error downloading video:", error);
+      toast.error("Failed to download video"); 
     }
   }
 
@@ -83,15 +86,15 @@ const ImageCard = ({
 
       if (!res.ok) throw new Error("Failed to delete");
 
-      setImages(
-        (prev: ImageType[]) =>
-          prev?.filter((img: ImageType) => img.fileId !== fileId) || []
+      setVideos(
+        (prev: VideoType[]) =>
+          prev?.filter((vid: VideoType) => vid.fileId !== fileId) || []
       );
-      toast.success("Image deleted successfully");
-      fetchFiles()
+      toast.success("Video deleted successfully");
+      fetchFiles();
     } catch (err) {
       console.error(err);
-      toast.error("Failed to delete image");
+      toast.error("Failed to delete video");
       fetchFiles()
     }
   };
@@ -103,7 +106,7 @@ const ImageCard = ({
     >
       
       <AspectRatio ratio={fileWidth / fileHeight}>
-        <img src={src} alt={alt} className="object-cover w-full h-full" />
+        <video src={src} controls muted className="object-cover w-full h-full" />
       </AspectRatio>
 
       <div className="p-2 flex justify-between items-center">
@@ -163,4 +166,4 @@ const ImageCard = ({
   );
 };
 
-export default ImageCard;
+export default VideoCard;

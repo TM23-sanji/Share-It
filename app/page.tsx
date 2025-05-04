@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Header from "@/components/header";
 import ImageGallery from "@/components/image-gallery";
+import VideoGallery from "@/components/video-gallery";
 import UploadModal from "@/components/upload-modal";
 import { toast } from "sonner";
 import { upload } from "@imagekit/next";
+import { Loader } from "lucide-react";
 
 export interface Image {
   src: string;
@@ -15,23 +17,41 @@ export interface Image {
   fileHeight: number;
 }
 
+export interface Video {
+  src: string;
+  alt: string;
+  fileId: string;
+  fileWidth: number;
+  fileHeight: number;
+  size: number;
+  thumbnail: string;
+}
+
 const Index = () => {
+  const [loading, setLoading] = useState(true);
   const [images, setImages] = useState<Image[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const res = await fetch("/api/list-images");
-        const data = await res.json();
-        setImages(data);
-      } catch (err) {
-        console.error("Failed to load images", err);
-        toast.error("Failed to load images");
-      }
-    };
+  const fetchFiles = async () => {
+    try {
+      setLoading(true);
+      const resImage = await fetch("/api/list-images");
+      const imageData = await resImage.json();
+      const resVideo = await fetch("/api/list-videos");
+      const videoData = await resVideo.json();
+      setImages(imageData);
+      setVideos(videoData);
+    } catch (err) {
+      console.error("Failed to load images", err);
+      toast.error("Failed to load images");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchImages();
+  useEffect(() => {
+    fetchFiles();
   }, []);
 
   const handleUploadClick = () => {
@@ -39,41 +59,66 @@ const Index = () => {
   };
 
   const handleUpload = async (file: File) => {
-    // In a real application, you would upload the file to a server
-    // For now, we'll just create a new image object with a local URL
-    const res = await fetch("/api/upload-auth");
-    const { token, expire, signature, publicKey } = await res.json();
-    const fileType = file.type.startsWith("video/") ? "video" : "image";
-    const uploadResponse = await upload({
-      file,
-      fileName: file.name,
-      token,
-      publicKey,
-      signature,
-      expire,
-      folder: `uploads/${fileType}`,
-      useUniqueFileName: true,
-    });
+    try {
+      // In a real application, you would upload the file to a server
+      // For now, we'll just create a new image object with a local URL
+      const res = await fetch("/api/upload-auth");
+      const { token, expire, signature, publicKey } = await res.json();
+      const isVideo = file.type.startsWith("video/");
+      const fileType = isVideo ? "video" : "image";
+      const uploadResponse = await upload({
+        file,
+        fileName: file.name,
+        token,
+        publicKey,
+        signature,
+        expire,
+        folder: `uploads/${fileType}`,
+        useUniqueFileName: true,
+      });
 
-    const newImage = {
-      src: uploadResponse.url || URL.createObjectURL(file),
-      alt: file.name,
-      fileId: uploadResponse.fileId!,
-      fileWidth: uploadResponse.width!,
-      fileHeight: uploadResponse.height!,
-    };
+      const uploadedFile = {
+        src: uploadResponse.url || URL.createObjectURL(file),
+        alt: isVideo ? uploadResponse.name : file.name,
+        fileId: uploadResponse.fileId!,
+        fileWidth: uploadResponse.width!,
+        fileHeight: uploadResponse.height!,
+        size: file.size,
+        thumbnail: isVideo ? uploadResponse.thumbnailUrl || "" : "",
+      };
 
-    setImages([newImage, ...images]);
-    toast.success("Image uploaded successfully");
+      if (isVideo) {
+        setVideos([uploadedFile as Video,...videos]);
+        toast.success("Video uploaded successfully");
+      } else {
+        setImages([{ ...uploadedFile, alt: file.name } as Image, ...images]);
+        toast.success("Image uploaded successfully");
+      }
+
+    } catch (err) {
+      console.error("Upload failed", err);
+      toast.error("Upload failed");
+    }
   };
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header onUploadClick={handleUploadClick} />
 
       <main className="flex-1 flex flex-col">
-        {images && images.length > 0 ? (
-          <ImageGallery images={images} setImages={setImages} />
+        {loading ? (
+          <div className="flex flex-col items-center justify-center text-gray-500 h-64">
+            <Loader className="animate-spin w-6 h-6 mb-2" />
+            <p>Loading...</p>
+          </div>
+        ) : images.length > 0 || videos.length > 0 ? (
+          <div >
+            {images.length > 0 && (
+              <ImageGallery images={images} setImages={setImages} fetchFiles={fetchFiles} />
+            )}
+            {videos.length > 0 && (
+              <VideoGallery videos={videos} setVideos={setVideos} fetchFiles={fetchFiles} />
+            )}
+          </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-gray-500 h-64">
             <p className="font-semibold">Nothing to show here yet.</p>
@@ -81,7 +126,7 @@ const Index = () => {
               onClick={handleUploadClick}
               className="mt-2 text-blue-500 hover:underline"
             >
-              Upload your first image
+              Upload your first file
             </button>
           </div>
         )}

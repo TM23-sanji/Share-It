@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useRef } from "react";
 import {
   Dialog,
@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Upload, Image } from "lucide-react";
 import { toast } from "sonner";
+import { Play, Pause } from "lucide-react"; 
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -29,7 +30,7 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
         toast.error("Please select an image or video file");
         return;
       }
-      
+
       setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -47,7 +48,7 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
         toast.error("Please select an image or video file");
         return;
       }
-      
+
       setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -68,14 +69,19 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
     }
   };
 
+  const handleCancel = () => {
+    onClose()
+    setPreview(null);
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleCancel}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Upload Image or Video</DialogTitle>
         </DialogHeader>
-        
-        <div 
+
+        <div
           className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-lg"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
@@ -83,16 +89,28 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
         >
           {preview ? (
             <div className="w-full max-h-64 overflow-hidden rounded-md">
-              <img 
-                src={preview} 
-                alt="Preview" 
-                className="w-full h-auto object-contain" 
-              />
+              {selectedFile?.type.startsWith("video") ? (
+                <video
+                  src={preview}
+                  controls
+                  className="w-full h-auto object-contain"
+                  muted
+                  autoPlay
+                />
+              ) : (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="w-full h-auto object-contain"
+                />
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center text-gray-500 cursor-pointer">
               <Image className="h-16 w-16 mb-2" />
-              <p className="text-sm">Click to browse or drag an image or video here</p>
+              <p className="text-sm">
+                Click to browse or drag an image or video here
+              </p>
             </div>
           )}
           <input
@@ -100,12 +118,12 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
             ref={fileInputRef}
             className="hidden"
             onChange={handleFileChange}
-            accept="image/*"
+            accept="image/*, video/*"
           />
         </div>
-        
+
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={handleCancel}>
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!selectedFile}>
