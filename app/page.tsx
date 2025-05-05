@@ -8,6 +8,7 @@ import UploadModal from "@/components/upload-modal";
 import { toast } from "sonner";
 import { upload } from "@imagekit/next";
 import { Loader } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export interface Image {
   src: string;
@@ -112,12 +113,14 @@ const Index = () => {
           </div>
         ) : images.length > 0 || videos.length > 0 ? (
           <div >
+            <ScrollArea className="h-[calc(100vh-80px)] pb-6">
             {images.length > 0 && (
               <ImageGallery images={images} setImages={setImages} fetchFiles={fetchFiles} />
             )}
             {videos.length > 0 && (
               <VideoGallery videos={videos} setVideos={setVideos} fetchFiles={fetchFiles} />
             )}
+            </ScrollArea>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-gray-500 h-64">
