@@ -11,12 +11,13 @@ interface ImageGalleryProps {
     fileHeight: number;
   }>;
   setImages: React.Dispatch<React.SetStateAction<any>>;
+  fetchFiles:()=>void;
 }
 
-const ImageGallery = ({ images, setImages }: ImageGalleryProps) => {
+const ImageGallery = ({ images, setImages, fetchFiles }: ImageGalleryProps) => {
   return (
     <div className="w-full">
-      <ScrollArea className="h-[calc(100vh-80px)] pb-6">
+      {/* <ScrollArea className="h-[calc(100vh-80px)] pb-6"> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
           {images.map((image) => (
             <div key={image.fileId}>
@@ -27,11 +28,12 @@ const ImageGallery = ({ images, setImages }: ImageGalleryProps) => {
                 fileWidth={image.fileWidth}
                 fileHeight={image.fileHeight}
                 setImages={setImages}
+                fetchFiles={fetchFiles}
               />
             </div>
           ))}
         </div>
-      </ScrollArea>
+      {/* </ScrollArea> */}
     </div>
   );
 };
