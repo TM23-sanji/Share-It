@@ -44,7 +44,7 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
         </Button>
         {/* )} */}
         <div className="flex items-center">
-          <div className="h-8 w-8 rounded-md flex items-center justify-center">
+          <div className="h-12 w-12 rounded-md flex items-center justify-center animate-subtle-pulse">
             <Image
               src="/logo.png" // from the public directory
               alt="Logo"
@@ -55,7 +55,7 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
           <h1
             onClick={() => router.push("/")}
             style={{ fontWeight: "bold" }}
-            className={`ml-4 ${underdog.className} text-lg cursor-pointer`}
+            className={`ml-3 ${underdog.className} text-lg cursor-pointer`}
           >
             WallTribe
           </h1>
