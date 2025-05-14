@@ -3,7 +3,6 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Heart,
   MessageSquare,
-  Share,
   Trash,
   Download,
   ThumbsUp,
@@ -13,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { Image as ImageType } from "@/app/page";
+import Image from "next/image";
 
 interface ImageCardProps {
   src: string;
@@ -21,7 +21,7 @@ interface ImageCardProps {
   fileWidth: number;
   fileHeight: number;
   onClick?: () => void;
-  setImages: React.Dispatch<React.SetStateAction<any>>;
+  setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
   fetchFiles: () => void;
 }
 
@@ -38,27 +38,27 @@ const ImageCard = ({
   const [liked, setLiked] = useState(false);
   const [userVote, setUserVote] = useState<"up" | "down" | null>(null);
 
-const handleDownvote = (e: React.MouseEvent) => {
-  e.stopPropagation();
+  const handleDownvote = (e: React.MouseEvent) => {
+    e.stopPropagation();
 
-  if (userVote !== "down") {
-    setUserVote("down");
-    toast("Downvoted");
-  } else {
-    setUserVote(null); // Reset to neutral
-  }
-};
+    if (userVote !== "down") {
+      setUserVote("down");
+      toast("Downvoted");
+    } else {
+      setUserVote(null); // Reset to neutral
+    }
+  };
 
-const handleUpvote = (e: React.MouseEvent) => {
-  e.stopPropagation();
+  const handleUpvote = (e: React.MouseEvent) => {
+    e.stopPropagation();
 
-  if (userVote !== "up") {
-    setUserVote("up");
-    toast.success("Upvoted!");
-  } else {
-    setUserVote(null); // Reset to neutral
-  }
-};
+    if (userVote !== "up") {
+      setUserVote("up");
+      toast.success("Upvoted!");
+    } else {
+      setUserVote(null); // Reset to neutral
+    }
+  };
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -69,11 +69,6 @@ const handleUpvote = (e: React.MouseEvent) => {
   const handleComment = (e: React.MouseEvent) => {
     e.stopPropagation();
     toast.info("Comment feature coming soon!");
-  };
-
-  const handleShare = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    toast.info("Share feature coming soon!");
   };
 
   const handleDownload = async (
@@ -130,7 +125,13 @@ const handleUpvote = (e: React.MouseEvent) => {
       onClick={onClick}
     >
       <AspectRatio ratio={fileWidth / fileHeight}>
-        <img src={src} alt={alt} className="object-cover w-full h-full" />
+        <Image
+          src={src}
+          alt={alt}
+          layout="fill"
+          objectFit="cover"
+          className="w-full h-full"
+        />
       </AspectRatio>
 
       <div className="p-2 flex justify-between items-center">
@@ -142,10 +143,7 @@ const handleUpvote = (e: React.MouseEvent) => {
             onClick={handleLike}
           >
             <Heart
-              className={cn(
-                "h-5 w-5",
-                liked ? "fill-red-500 text-black" : ""
-              )}
+              className={cn("h-5 w-5", liked ? "fill-red-500 text-black" : "")}
             />
           </Button>
 

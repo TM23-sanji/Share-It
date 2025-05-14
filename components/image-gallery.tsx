@@ -1,6 +1,6 @@
 import React from "react";
 import ImageCard from "./image-card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import type { Image as ImageType } from "@/app/page";
 
 interface ImageGalleryProps {
   images: Array<{
@@ -10,7 +10,7 @@ interface ImageGalleryProps {
     fileWidth: number;
     fileHeight: number;
   }>;
-  setImages: React.Dispatch<React.SetStateAction<any>>;
+  setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
   fetchFiles:()=>void;
 }
 

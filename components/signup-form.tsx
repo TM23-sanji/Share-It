@@ -11,14 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Mail,
-  Lock,
   AlertCircle,
-  CheckCircle,
-  Eye,
-  EyeOff,
 } from "lucide-react";
-import { Divider } from "@heroui/divider";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 
 import {
@@ -31,7 +25,6 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useAuth, useSignUp } from "@clerk/nextjs";
 import React, { useState } from "react";
-import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "@/schemas/signUpSchema";
@@ -44,18 +37,16 @@ export function SignUpForm({
   const { isSignedIn } = useAuth();
   const { signUp, isLoaded, setActive } = useSignUp();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
+  const [, setAuthError] = useState<string | null>(null);
   const [verifying, setVerifying] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationError, setVerificationError] = useState<string | null>(
     null
   );
-  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -80,11 +71,16 @@ export function SignUpForm({
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setVerifying(true);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Sign-up error:", error);
       setAuthError(
-        error.errors?.[0]?.message ||
-          "An error occurred during sign-up. Please try again."
+        typeof error === "object" &&
+        error !== null &&
+        "errors" in error &&
+        Array.isArray((error as any).errors) &&
+        (error as any).errors[0]?.message
+          ? (error as any).errors[0].message
+          : "An error occurred during sign-up. Please try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -109,12 +105,17 @@ export function SignUpForm({
         await setActive({ session: result.createdSessionId });
         router.push("/");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Verification error:", error);
       setVerificationCode("");
       setVerificationError(
-        error.errors?.[0]?.message ||
-          "An error occurred during verification. Please try again."
+        (typeof error === "object" &&
+          error !== null &&
+          "errors" in error &&
+          Array.isArray((error as any).errors) &&
+          (error as any).errors[0]?.message)
+          ? (error as any).errors[0].message
+          : "An error occurred during verification. Please try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -131,7 +132,7 @@ export function SignUpForm({
           <CardDescription>
             {!verificationError && (
               <p className="text-muted-foreground text-sm text-center">
-                We've sent a verification code to your email
+                We&apos;ve sent a verification code to your email
               </p>
             )}
             {verificationError && (
@@ -179,7 +180,7 @@ export function SignUpForm({
             </form>
             <div className="mt-6 text-center">
               <p className="text-sm text-default-500">
-                Didn't receive a code?{" "}
+                Didn&apos;t receive a code?{" "}
                 <button
                   onClick={async () => {
                     if (signUp) {

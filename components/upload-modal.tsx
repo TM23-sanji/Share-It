@@ -8,8 +8,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Upload, Image } from "lucide-react";
+import { Upload, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -77,7 +78,7 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
     <Dialog open={isOpen} onOpenChange={handleCancel}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Upload Image or Video</DialogTitle>
+          <DialogTitle>Upload Image</DialogTitle>
         </DialogHeader>
 
         <div
@@ -87,19 +88,19 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
           onClick={() => fileInputRef.current?.click()}
         >
           {preview ? (
-            <div className="w-full max-h-64 overflow-hidden rounded-md">
-              <img
+            <div className="w-full max-h-64 overflow-hidden rounded-md relative aspect-video">
+              <Image
                 src={preview}
                 alt="Preview"
-                className="w-full h-auto object-contain"
+                layout="fill"
+                objectFit="contain"
+                className="rounded-md"
               />
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center text-gray-500 cursor-pointer">
-              <Image className="h-16 w-16 mb-2" />
-              <p className="text-sm">
-                Click to browse or drag an image here
-              </p>
+              <ImageIcon className="h-16 w-16 mb-2" />
+              <p className="text-sm">Click to browse or drag an image here</p>
             </div>
           )}
           <input

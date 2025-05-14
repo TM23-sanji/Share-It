@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -26,13 +25,12 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const router = useRouter();
   const { isSignedIn } = useAuth();
-  const [isSubmitting, setisSubmitting] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
+  const [ ,setIsSubmitting] = useState(false);
+  const [, setAuthError] = useState<string | null>(null);
   const { signIn, isLoaded, setActive } = useSignIn();
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -44,7 +42,7 @@ export function LoginForm({
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     if (isSignedIn) router.push("/");
     if (!isLoaded) return;
-    setisSubmitting(true);
+    setIsSubmitting(true);
     setAuthError(null);
 
     try {
@@ -60,14 +58,21 @@ export function LoginForm({
         console.error("Sign-in incomplete:", response);
         setAuthError("Sign-in could not be completed. Please try again.");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Sign-up error:", error);
-      setAuthError(
-        error.errors?.[0]?.message ||
-          "An error occurred during sign-up. Please try again."
-      );
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "errors" in error &&
+        Array.isArray((error as any).errors) &&
+        (error as any).errors[0]?.message
+      ) {
+        setAuthError((error as any).errors[0].message);
+      } else {
+        setAuthError("An error occurred during sign-up. Please try again.");
+      }
     } finally {
-      setisSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
