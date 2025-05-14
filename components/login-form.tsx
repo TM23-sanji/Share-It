@@ -2,12 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -25,13 +20,10 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const router = useRouter();
   const { isSignedIn } = useAuth();
-  const [ ,setIsSubmitting] = useState(false);
+  const [, setIsSubmitting] = useState(false);
   const [, setAuthError] = useState<string | null>(null);
   const { signIn, isLoaded, setActive } = useSignIn();
-  const {
-    register,
-    handleSubmit,
-  } = useForm<z.infer<typeof signInSchema>>({
+  const { register, handleSubmit } = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
@@ -59,18 +51,8 @@ export function LoginForm({
         setAuthError("Sign-in could not be completed. Please try again.");
       }
     } catch (error) {
-      console.error("Sign-up error:", error);
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "errors" in error &&
-        Array.isArray((error as any).errors) &&
-        (error as any).errors[0]?.message
-      ) {
-        setAuthError((error as any).errors[0].message);
-      } else {
-        setAuthError("An error occurred during sign-up. Please try again.");
-      }
+      console.error("Sign-in error:", error)
+      setAuthError("An error occurred during sign-up. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

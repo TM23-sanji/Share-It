@@ -16,25 +16,23 @@ interface ImageGalleryProps {
 
 const ImageGallery = ({ images, setImages, fetchFiles }: ImageGalleryProps) => {
   return (
-    <div className="w-full">
-      {/* <ScrollArea className="h-[calc(100vh-80px)] pb-6"> */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-          {images.map((image) => (
-            <div key={image.fileId}>
-              <ImageCard
-                src={image.src}
-                alt={image.alt}
-                fileId={image.fileId}
-                fileWidth={image.fileWidth}
-                fileHeight={image.fileHeight}
-                setImages={setImages}
-                fetchFiles={fetchFiles}
-              />
-            </div>
-          ))}
-        </div>
-      {/* </ScrollArea> */}
-    </div>
+<div className="w-full p-6">
+  <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+    {images.map((image) => (
+      <div key={image.fileId} className="break-inside-avoid">
+        <ImageCard
+          src={image.src}
+          alt={image.alt}
+          fileId={image.fileId}
+          fileWidth={image.fileWidth}
+          fileHeight={image.fileHeight}
+          setImages={setImages}
+          fetchFiles={fetchFiles}
+        />
+      </div>
+    ))}
+  </div>
+</div>
   );
 };
 

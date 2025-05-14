@@ -10,9 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  AlertCircle,
-} from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 
 import {
@@ -44,10 +42,7 @@ export function SignUpForm({
     null
   );
 
-  const {
-    register,
-    handleSubmit,
-  } = useForm<z.infer<typeof signUpSchema>>({
+  const { register, handleSubmit } = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: "",
@@ -73,15 +68,7 @@ export function SignUpForm({
       setVerifying(true);
     } catch (error) {
       console.error("Sign-up error:", error);
-      setAuthError(
-        typeof error === "object" &&
-        error !== null &&
-        "errors" in error &&
-        Array.isArray((error as any).errors) &&
-        (error as any).errors[0]?.message
-          ? (error as any).errors[0].message
-          : "An error occurred during sign-up. Please try again."
-      );
+      setAuthError("An error occurred during sign-up. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -109,13 +96,7 @@ export function SignUpForm({
       console.error("Verification error:", error);
       setVerificationCode("");
       setVerificationError(
-        (typeof error === "object" &&
-          error !== null &&
-          "errors" in error &&
-          Array.isArray((error as any).errors) &&
-          (error as any).errors[0]?.message)
-          ? (error as any).errors[0].message
-          : "An error occurred during verification. Please try again."
+        "An error occurred during verification. Please try again."
       );
     } finally {
       setIsSubmitting(false);
