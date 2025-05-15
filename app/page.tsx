@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { upload } from "@imagekit/next";
 import { Loader } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Progress } from "@/components/ui/progress";
 
 export interface Image {
   src: string;
@@ -19,8 +20,10 @@ export interface Image {
 
 const Index = () => {
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = React.useState(13);
   const [images, setImages] = useState<Image[]>([]);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   const fetchFiles = async () => {
     try {
@@ -35,9 +38,25 @@ const Index = () => {
       setLoading(false);
     }
   };
+  
+  useEffect(()=>{
+    fetchFiles();
+  },[])
 
   useEffect(() => {
-    fetchFiles();
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        const next = prev + 5;
+        if (next >= 100) {
+          clearInterval(interval);
+          setTimeout(() => setShowContent(true), 100); // Slight delay to trigger animation
+          return 100;
+        }
+        return next;
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleUploadClick = () => {
@@ -81,7 +100,24 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Progress Screen */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-700 ease-in ${
+          showContent ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
+        <div className="w-1/2 max-w-md space-y-4">
+          <p className="text-center text-gray-500">Loading app...</p>
+          <Progress value={progress} className="h-4" />
+        </div>
+      </div>
+
+      <div
+        className={`transition-opacity duration-700 ease-in ${
+          showContent ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
       <Header onUploadClick={handleUploadClick} />
 
       <main className="flex-1 flex flex-col">
@@ -117,6 +153,7 @@ const Index = () => {
         onClose={() => setIsUploadModalOpen(false)}
         onUpload={handleUpload}
       />
+    </div>
     </div>
   );
 };

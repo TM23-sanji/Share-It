@@ -27,7 +27,7 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
 
   const handleShare = () => {
     const shareUrl = encodeURIComponent(
-      "https://ql29tt39-3000.inc1.devtunnels.ms/"
+      "https://wall-tribe.vercel.app/"
     );
     const message = encodeURIComponent("Hey! Join me here: ");
     const whatsappUrl = `https://wa.me/?text=${message}${shareUrl}`;
