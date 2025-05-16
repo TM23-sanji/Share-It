@@ -3,7 +3,7 @@ import Comment, { CommentProps } from './comment';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { X } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CommentListProps {
@@ -71,7 +71,7 @@ const commentList: React.FC<CommentListProps> = ({ comments: initialComments, on
             placeholder="Add a comment..."
             className="flex-1"
           />
-          <Button type="submit" size="sm">Post</Button>
+          <Button type="submit" ><Send className="h-4 w-4" /></Button>
         </div>
       </form>
 

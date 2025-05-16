@@ -14,6 +14,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
 import Image from "next/image";
+import { useSidebar } from "@/hooks/use-sidebar";
 
 const underdog = Underdog({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const { signOut } = useClerk();
+  const { toggleSidebar } = useSidebar();
 
   const handleShare = () => {
     const shareUrl = encodeURIComponent(
@@ -38,7 +40,7 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
     <header className="sticky top-0 z-10 bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between">
       <div className="flex items-center">
         {/* {isMobile && ( */}
-        <Button variant="ghost" size="icon" className="mr-2">
+        <Button variant="ghost" onClick={toggleSidebar} size="icon" className="mr-2">
           <Menu className="h-5 w-5" />
         </Button>
         {/* )} */}

@@ -9,6 +9,7 @@ import { upload } from "@imagekit/next";
 import { Loader } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
+import Sidebar from "@/components/Sidebar";
 
 export interface Image {
   src: string;
@@ -127,8 +128,12 @@ const Index = () => {
             <p>Loading...</p>
           </div>
         ) : images.length > 0 ? (
-          <div>
-            <ScrollArea className="h-[calc(100vh-80px)] pb-6">
+          <div className="flex ">
+            <ScrollArea className="h-[calc(100vh-80px)]">
+            <Sidebar/>
+            </ScrollArea>
+            
+            <ScrollArea className="h-[calc(100vh-80px)] w-full pr-1 pb-6 ">
               <ImageGallery
                 images={images}
                 setImages={setImages}

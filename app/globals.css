@@ -6,6 +6,10 @@
   min-height: 0 !important;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes subtle-pulse {
   0%, 100% {
     transform: scale(1);
