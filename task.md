@@ -4,3 +4,6 @@
 8> Menu Sidebar: Groups> Users, Green btn for active, 
 9> Group API Dynamic route: only accessed & logged in user
 10> Create group: Role: Admin, join request to user by username, when user accepts then in backend 
+
+11> Username is unique and in lowercase, without any spaces
+12> Error in signup form is not shown

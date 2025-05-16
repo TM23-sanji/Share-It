@@ -8,11 +8,13 @@ import {
   ThumbsUp,
   ThumbsDown,
 } from "lucide-react";
+import CommentList from "@/components/commentList";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { Image as ImageType } from "@/app/page";
 import Image from "next/image";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ImageCardProps {
   src: string;
@@ -37,6 +39,50 @@ const ImageCard = ({
 }: ImageCardProps) => {
   const [liked, setLiked] = useState(false);
   const [userVote, setUserVote] = useState<"up" | "down" | null>(null);
+  const [showComments, setShowComments] = useState(false);
+  const comments = [
+    {
+      id: "comment-1",
+      user: {
+        name: "Sarah Johnson",
+        username: "sarahj",
+        avatar: "https://i.pravatar.cc/150?img=1",
+      },
+      content:
+        "This is a great post! I've been looking for information like this for a while.",
+      timestamp: "2023-05-14T10:23:00.000Z",
+      likes: 12,
+      replies: 2,
+      isLiked: false,
+    },
+    {
+      id: "comment-2",
+      user: {
+        name: "Mike Thompson",
+        username: "miket",
+        avatar: "https://i.pravatar.cc/150?img=2",
+      },
+      content: "Thanks for sharing! I learned a lot from this.",
+      timestamp: "2023-05-14T11:45:00.000Z",
+      likes: 8,
+      replies: 0,
+      isLiked: true,
+    },
+    {
+      id: "comment-3",
+      user: {
+        name: "Alex Rodriguez",
+        username: "alexr",
+        avatar: "https://i.pravatar.cc/150?img=3",
+      },
+      content:
+        "I have a question about the third point. Could you elaborate more on that?",
+      timestamp: "2023-05-14T12:30:00.000Z",
+      likes: 4,
+      replies: 1,
+      isLiked: false,
+    },
+  ];
 
   const handleDownvote = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -68,7 +114,7 @@ const ImageCard = ({
 
   const handleComment = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast.info("Comment feature coming soon!");
+    setShowComments((prev) => !prev);
   };
 
   const handleDownload = async (
@@ -125,13 +171,22 @@ const ImageCard = ({
       onClick={onClick}
     >
       <AspectRatio ratio={fileWidth / fileHeight}>
-        <Image
-          src={src}
-          alt={alt}
-          layout="fill"
-          objectFit="cover"
-          className="w-full h-full"
-        />
+      {!showComments ? (
+          <Image
+            src={src}
+            alt={alt}
+            layout="fill"
+            objectFit="cover"
+            className="w-full h-full"
+          />
+        ) : (
+          <ScrollArea className="overflow-y-auto w-full h-full">
+          <CommentList
+            comments={comments}
+            onClose={() => setShowComments(false)}
+            />
+        </ScrollArea>
+      )}
       </AspectRatio>
 
       <div className="p-2 flex justify-between items-center">
@@ -156,15 +211,6 @@ const ImageCard = ({
             <MessageSquare className="h-5 w-5" />
           </Button>
 
-          {/* <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full"
-            onClick={handleShare}
-          >
-            <Share className="h-5 w-5" />
-          </Button>
- */}
           <Button
             variant="ghost"
             size="icon"
@@ -213,6 +259,10 @@ const ImageCard = ({
             <Trash className="h-4 w-4" />
           </div>
         </div>
+      </div>
+
+      <div className="pr-5 text-end pb-0 text-sm font-medium text-gray-800">
+        - Monkey D. Luffy
       </div>
     </div>
   );
