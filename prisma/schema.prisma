@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id 
+  username       String   @unique
+  email          String   @unique
+
+  sentRequests     FriendRequest[] @relation("SentRequests")
+  receivedRequests FriendRequest[] @relation("ReceivedRequests")
+
+  friendsAsUser1   Friendship[] @relation("FriendshipUser1")
+  friendsAsUser2   Friendship[] @relation("FriendshipUser2")
+
+  images           Image[]         @relation("UserImages")
+  comments         Comment[]       @relation("UserComments")
+  favorites        Favorite[]
+}
+
+model Image {
+  id            String     @id @default(cuid())
+  url           String
+  uploadedBy    User       @relation("UserImages", fields: [uploadedById], references: [id])
+  uploadedById  String
+  likes         Int        @default(0)
+  dislikes      Int        @default(0)
+  comments      Comment[]
+  favorites     Favorite[] @relation("ImageFavorites")
+  createdAt     DateTime   @default(now())
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  image     Image    @relation(fields: [imageId], references: [id])
+  imageId   String
+  user      User     @relation("UserComments", fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  image     Image    @relation("ImageFavorites", fields: [imageId], references: [id])
+  imageId   String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, imageId])
+}
+
+model FriendRequest {
+  id        String   @id @default(cuid())
+  from      User     @relation("SentRequests", fields: [fromId], references: [id])
+  fromId    String
+
+  to        User     @relation("ReceivedRequests", fields: [toId], references: [id])
+  toId      String
+
+  toUsername String
+  createdAt  DateTime @default(now())
+}
+
+model Friendship {
+  id       String @id @default(cuid())
+  
+  user1    User   @relation("FriendshipUser1", fields: [user1Id], references: [id])
+  user1Id  String
+
+  user2    User   @relation("FriendshipUser2", fields: [user2Id], references: [id])
+  user2Id  String
+
+  since    DateTime @default(now())
+
+  @@unique([user1Id, user2Id])
+}

@@ -88,8 +88,12 @@ export function SignUpForm({
         code: verificationCode,
       });
 
+
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
+        await fetch("/api/create-user", {
+        method: "POST",
+      });
         router.push("/");
       }
     } catch (error) {
