@@ -8,6 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "./ui/scroll-area";
 import { useInviteBubbleStore } from "@/hooks/use-invite";
+import { useProfileBubbleStore } from "@/hooks/use-profile";
 
 // Mock data for friends
 const friends = [
@@ -76,7 +77,7 @@ const Sidebar = () => {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 hover:bg-purple-50"
-                onClick={()=>{closeSidebar(); useInviteBubbleStore.getState().toggleInvite()}}
+                onClick={()=>{closeSidebar(); useInviteBubbleStore.getState().toggleInvite(); useProfileBubbleStore.getState().setIsOpen(false)}}
               >
                 <UserPlus className="h-5 w-5" />
               </Button>
@@ -108,7 +109,6 @@ const Sidebar = () => {
                 <RequestItem
                   key={request.id}
                   name={request.name}
-                  isOnline={request.isOnline}
                 />
               ))}
             </ScrollArea>
