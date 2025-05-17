@@ -7,3 +7,4 @@
 
 11> Username is unique and in lowercase, without any spaces
 12> Error in signup form is not shown
+13> Profile X

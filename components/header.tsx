@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
 import Image from "next/image";
 import { useSidebar } from "@/hooks/use-sidebar";
+import InviteFriend from "./InviteFriend";
+import { useInviteBubbleStore } from "@/hooks/use-invite";
 
 const underdog = Underdog({
   subsets: ["latin"],
@@ -26,15 +28,6 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
   const isMobile = useIsMobile();
   const { signOut } = useClerk();
   const { toggleSidebar } = useSidebar();
-
-  const handleShare = () => {
-    const shareUrl = encodeURIComponent(
-      "https://wall-tribe.vercel.app/"
-    );
-    const message = encodeURIComponent("Hey! Join me here: ");
-    const whatsappUrl = `https://wa.me/?text=${message}${shareUrl}`;
-    window.open(whatsappUrl, "_blank");
-  };
 
   return (
     <header className="sticky top-0 z-10 bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between">
@@ -64,14 +57,15 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
       </div>
 
       <div className="flex items-center space-x-2">
-        <Button
+         <Button
           variant="ghost"
-          size="icon"
-          className="mr-2 cursor-pointer"
-          onClick={handleShare}
+          className="mr-2 flex items-center gap-1 cursor-pointer"
+          onClick={()=>useInviteBubbleStore.getState().toggleInvite()}
+          size="sm"
         >
-          <UserPlus2 className="h-5 w-5" />
+          <UserPlus2 className="h-4 w-4" />
         </Button>
+        <InviteFriend/>
 
         <Button
           variant="ghost"

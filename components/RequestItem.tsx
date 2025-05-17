@@ -1,4 +1,4 @@
-import { Circle, Minus } from "lucide-react";
+import { Circle, Check, X , Plus} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FriendItemProps {
@@ -6,25 +6,18 @@ interface FriendItemProps {
   isOnline: boolean;
 }
 
-const FriendItem = ({ name, isOnline }: FriendItemProps) => {
+const RequestItem = ({ name, isOnline }: FriendItemProps) => {
   return (
     <div className="flex items-center justify-between p-3 pr-0 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors">
       <div className="flex items-center">
-        <Circle
-          className={cn(
-            "h-2 w-2 mr-3",
-            isOnline
-              ? "fill-green-500 stroke-green-500"
-              : "fill-red-500 stroke-red-500"
-          )}
-        />
         <span className="font-medium text-gray-700">{name}</span>
       </div>
+
       <div className="flex items-center space-x-2 pl-2 pr-2">
-        <Minus className="h-3 w-3" />
+        <Plus className="h-3 w-3" />
       </div>
     </div>
   );
 };
 
-export default FriendItem;
+export default RequestItem;
