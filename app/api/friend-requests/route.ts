@@ -55,6 +55,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Friend request already sent" }, { status: 200 });
     }
 
+    const existingRequest = await prisma.friendRequest.findFirst({
+      where: {
+        OR: [
+          { fromId: user.id, toId:recipient.id },
+          { fromId: recipient.id, toId: user.id },
+        ],
+      },
+    });
+
+    if (existingRequest) {
+      return NextResponse.json({ message: "Friend request already exists" }, { status: 200 });
+    }
+
+
     const alreadyFriends = await prisma.friendship.findFirst({
       where: {
         OR: [

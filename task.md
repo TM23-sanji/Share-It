@@ -7,3 +7,4 @@
 12> Error in signup form is not shown
 13> Verify human flow out of div
 14> DP 
+15> Accepted requested move to friends

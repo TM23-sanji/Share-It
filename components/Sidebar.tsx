@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useRef, useState } from "react";
 import { UserPlus, InboxIcon } from "lucide-react";
 import FriendItem from "./FriendItem";
@@ -11,26 +11,24 @@ import { ScrollArea } from "./ui/scroll-area";
 import { useInviteBubbleStore } from "@/hooks/use-invite";
 import { useProfileBubbleStore } from "@/hooks/use-profile";
 
+type Friend = {
+  id: number;
+  name: string;
+  isOnline: boolean;
+};
+
 type Request = {
   id: string;
   name: string;
   email: string;
-}
-// Mock data for friends
-const friends = [
-  { id: 1, name: "Sarah Johnson", isOnline: true },
-  { id: 2, name: "Michael Chen", isOnline: true },
-  { id: 3, name: "Emma Wilson", isOnline: false },
-  { id: 4, name: "David Kim", isOnline: true },
-  { id: 5, name: "Rachel Patel", isOnline: false },
-  { id: 6, name: "James Rodriguez", isOnline: true },
-];
+};
 
 const Sidebar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const isMobile = useIsMobile();
   const sidebarRef = useRef<HTMLDivElement>(null);
-    const [requests, setRequests] = useState<Request[]>([]);
+  const [requests, setRequests] = useState<Request[]>([]);
+  const [friends, setFriends] = useState<Friend[]>([]);
 
   useEffect(() => {
     fetch("/api/friend-requests")
@@ -38,6 +36,11 @@ const Sidebar = () => {
       .then((data) => setRequests(data));
   }, []);
 
+  useEffect(() => {
+    fetch("/api/friends")
+      .then((res) => res.json())
+      .then((data) => setFriends(data));
+  }, []);
 
   // Close sidebar on mobile when clicking outside
   useEffect(() => {
@@ -82,7 +85,11 @@ const Sidebar = () => {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8 hover:bg-purple-50"
-                onClick={()=>{closeSidebar(); useInviteBubbleStore.getState().toggleInvite(); useProfileBubbleStore.getState().setIsOpen(false)}}
+                onClick={() => {
+                  closeSidebar();
+                  useInviteBubbleStore.getState().toggleInvite();
+                  useProfileBubbleStore.getState().setIsOpen(false);
+                }}
               >
                 <UserPlus className="h-5 w-5" />
               </Button>
@@ -111,10 +118,7 @@ const Sidebar = () => {
 
             <ScrollArea className="overflow-y-auto py-2 px-2 w-full">
               {requests.map((request) => (
-                <RequestItem
-                  key={request.id}
-                  name={request.name}
-                />
+                <RequestItem key={request.id} name={request.name} />
               ))}
             </ScrollArea>
           </>
