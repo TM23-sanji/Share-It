@@ -72,7 +72,6 @@ model FriendRequest {
   to        User     @relation("ReceivedRequests", fields: [toId], references: [id])
   toId      String
 
-  toUsername String
   createdAt  DateTime @default(now())
 }
 

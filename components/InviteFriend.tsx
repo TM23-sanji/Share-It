@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserPlus, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -13,25 +13,40 @@ const InviteFriend = () => {
   const [username, setUsername] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!username.trim()) return;
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!username.trim()) return;
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
+  try {
+    const res = await fetch("/api/friend-requests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      toast.error(data.error || data.message || "Something went wrong");
+    } else {
       toast.success(
         <>
           <div className="font-semibold">Invitation sent!</div>
-          <div>{username} has been invited to join.</div>
+          <div>{username} has been invited.</div>
         </>
       );
       setUsername("");
-      setIsSubmitting(false);
       setIsOpen(false);
-    }, 1000);
-  };
+    }
+  } catch (err: any) {
+    console.error(err);
+    toast.error(err.message || "Unexpected error occurred");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="fixed top-6 right-6 z-50">

@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+"use client"
+import { useEffect, useRef, useState } from "react";
 import { UserPlus, InboxIcon } from "lucide-react";
 import FriendItem from "./FriendItem";
 import RequestItem from "./RequestItem";
@@ -10,17 +11,13 @@ import { ScrollArea } from "./ui/scroll-area";
 import { useInviteBubbleStore } from "@/hooks/use-invite";
 import { useProfileBubbleStore } from "@/hooks/use-profile";
 
+type Request = {
+  id: string;
+  name: string;
+  email: string;
+}
 // Mock data for friends
 const friends = [
-  { id: 1, name: "Sarah Johnson", isOnline: true },
-  { id: 2, name: "Michael Chen", isOnline: true },
-  { id: 3, name: "Emma Wilson", isOnline: false },
-  { id: 4, name: "David Kim", isOnline: true },
-  { id: 5, name: "Rachel Patel", isOnline: false },
-  { id: 6, name: "James Rodriguez", isOnline: true },
-];
-
-const requests = [
   { id: 1, name: "Sarah Johnson", isOnline: true },
   { id: 2, name: "Michael Chen", isOnline: true },
   { id: 3, name: "Emma Wilson", isOnline: false },
@@ -33,6 +30,14 @@ const Sidebar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const isMobile = useIsMobile();
   const sidebarRef = useRef<HTMLDivElement>(null);
+    const [requests, setRequests] = useState<Request[]>([]);
+
+  useEffect(() => {
+    fetch("/api/friend-requests")
+      .then((res) => res.json())
+      .then((data) => setRequests(data));
+  }, []);
+
 
   // Close sidebar on mobile when clicking outside
   useEffect(() => {

@@ -5964,7 +5964,6 @@ export namespace Prisma {
     id: string | null
     fromId: string | null
     toId: string | null
-    toUsername: string | null
     createdAt: Date | null
   }
 
@@ -5972,7 +5971,6 @@ export namespace Prisma {
     id: string | null
     fromId: string | null
     toId: string | null
-    toUsername: string | null
     createdAt: Date | null
   }
 
@@ -5980,7 +5978,6 @@ export namespace Prisma {
     id: number
     fromId: number
     toId: number
-    toUsername: number
     createdAt: number
     _all: number
   }
@@ -5990,7 +5987,6 @@ export namespace Prisma {
     id?: true
     fromId?: true
     toId?: true
-    toUsername?: true
     createdAt?: true
   }
 
@@ -5998,7 +5994,6 @@ export namespace Prisma {
     id?: true
     fromId?: true
     toId?: true
-    toUsername?: true
     createdAt?: true
   }
 
@@ -6006,7 +6001,6 @@ export namespace Prisma {
     id?: true
     fromId?: true
     toId?: true
-    toUsername?: true
     createdAt?: true
     _all?: true
   }
@@ -6087,7 +6081,6 @@ export namespace Prisma {
     id: string
     fromId: string
     toId: string
-    toUsername: string
     createdAt: Date
     _count: FriendRequestCountAggregateOutputType | null
     _min: FriendRequestMinAggregateOutputType | null
@@ -6112,7 +6105,6 @@ export namespace Prisma {
     id?: boolean
     fromId?: boolean
     toId?: boolean
-    toUsername?: boolean
     createdAt?: boolean
     from?: boolean | UserDefaultArgs<ExtArgs>
     to?: boolean | UserDefaultArgs<ExtArgs>
@@ -6122,7 +6114,6 @@ export namespace Prisma {
     id?: boolean
     fromId?: boolean
     toId?: boolean
-    toUsername?: boolean
     createdAt?: boolean
     from?: boolean | UserDefaultArgs<ExtArgs>
     to?: boolean | UserDefaultArgs<ExtArgs>
@@ -6132,7 +6123,6 @@ export namespace Prisma {
     id?: boolean
     fromId?: boolean
     toId?: boolean
-    toUsername?: boolean
     createdAt?: boolean
     from?: boolean | UserDefaultArgs<ExtArgs>
     to?: boolean | UserDefaultArgs<ExtArgs>
@@ -6142,11 +6132,10 @@ export namespace Prisma {
     id?: boolean
     fromId?: boolean
     toId?: boolean
-    toUsername?: boolean
     createdAt?: boolean
   }
 
-  export type FriendRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromId" | "toId" | "toUsername" | "createdAt", ExtArgs["result"]["friendRequest"]>
+  export type FriendRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromId" | "toId" | "createdAt", ExtArgs["result"]["friendRequest"]>
   export type FriendRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     from?: boolean | UserDefaultArgs<ExtArgs>
     to?: boolean | UserDefaultArgs<ExtArgs>
@@ -6170,7 +6159,6 @@ export namespace Prisma {
       id: string
       fromId: string
       toId: string
-      toUsername: string
       createdAt: Date
     }, ExtArgs["result"]["friendRequest"]>
     composites: {}
@@ -6600,7 +6588,6 @@ export namespace Prisma {
     readonly id: FieldRef<"FriendRequest", 'String'>
     readonly fromId: FieldRef<"FriendRequest", 'String'>
     readonly toId: FieldRef<"FriendRequest", 'String'>
-    readonly toUsername: FieldRef<"FriendRequest", 'String'>
     readonly createdAt: FieldRef<"FriendRequest", 'DateTime'>
   }
     
@@ -8129,7 +8116,6 @@ export namespace Prisma {
     id: 'id',
     fromId: 'fromId',
     toId: 'toId',
-    toUsername: 'toUsername',
     createdAt: 'createdAt'
   };
 
@@ -8476,7 +8462,6 @@ export namespace Prisma {
     id?: StringFilter<"FriendRequest"> | string
     fromId?: StringFilter<"FriendRequest"> | string
     toId?: StringFilter<"FriendRequest"> | string
-    toUsername?: StringFilter<"FriendRequest"> | string
     createdAt?: DateTimeFilter<"FriendRequest"> | Date | string
     from?: XOR<UserScalarRelationFilter, UserWhereInput>
     to?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -8486,7 +8471,6 @@ export namespace Prisma {
     id?: SortOrder
     fromId?: SortOrder
     toId?: SortOrder
-    toUsername?: SortOrder
     createdAt?: SortOrder
     from?: UserOrderByWithRelationInput
     to?: UserOrderByWithRelationInput
@@ -8499,7 +8483,6 @@ export namespace Prisma {
     NOT?: FriendRequestWhereInput | FriendRequestWhereInput[]
     fromId?: StringFilter<"FriendRequest"> | string
     toId?: StringFilter<"FriendRequest"> | string
-    toUsername?: StringFilter<"FriendRequest"> | string
     createdAt?: DateTimeFilter<"FriendRequest"> | Date | string
     from?: XOR<UserScalarRelationFilter, UserWhereInput>
     to?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -8509,7 +8492,6 @@ export namespace Prisma {
     id?: SortOrder
     fromId?: SortOrder
     toId?: SortOrder
-    toUsername?: SortOrder
     createdAt?: SortOrder
     _count?: FriendRequestCountOrderByAggregateInput
     _max?: FriendRequestMaxOrderByAggregateInput
@@ -8523,7 +8505,6 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"FriendRequest"> | string
     fromId?: StringWithAggregatesFilter<"FriendRequest"> | string
     toId?: StringWithAggregatesFilter<"FriendRequest"> | string
-    toUsername?: StringWithAggregatesFilter<"FriendRequest"> | string
     createdAt?: DateTimeWithAggregatesFilter<"FriendRequest"> | Date | string
   }
 
@@ -8824,7 +8805,6 @@ export namespace Prisma {
 
   export type FriendRequestCreateInput = {
     id?: string
-    toUsername: string
     createdAt?: Date | string
     from: UserCreateNestedOneWithoutSentRequestsInput
     to: UserCreateNestedOneWithoutReceivedRequestsInput
@@ -8834,13 +8814,11 @@ export namespace Prisma {
     id?: string
     fromId: string
     toId: string
-    toUsername: string
     createdAt?: Date | string
   }
 
   export type FriendRequestUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     from?: UserUpdateOneRequiredWithoutSentRequestsNestedInput
     to?: UserUpdateOneRequiredWithoutReceivedRequestsNestedInput
@@ -8850,7 +8828,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fromId?: StringFieldUpdateOperationsInput | string
     toId?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8858,13 +8835,11 @@ export namespace Prisma {
     id?: string
     fromId: string
     toId: string
-    toUsername: string
     createdAt?: Date | string
   }
 
   export type FriendRequestUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8872,7 +8847,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     fromId?: StringFieldUpdateOperationsInput | string
     toId?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -9177,7 +9151,6 @@ export namespace Prisma {
     id?: SortOrder
     fromId?: SortOrder
     toId?: SortOrder
-    toUsername?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -9185,7 +9158,6 @@ export namespace Prisma {
     id?: SortOrder
     fromId?: SortOrder
     toId?: SortOrder
-    toUsername?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -9193,7 +9165,6 @@ export namespace Prisma {
     id?: SortOrder
     fromId?: SortOrder
     toId?: SortOrder
-    toUsername?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -9839,7 +9810,6 @@ export namespace Prisma {
 
   export type FriendRequestCreateWithoutFromInput = {
     id?: string
-    toUsername: string
     createdAt?: Date | string
     to: UserCreateNestedOneWithoutReceivedRequestsInput
   }
@@ -9847,7 +9817,6 @@ export namespace Prisma {
   export type FriendRequestUncheckedCreateWithoutFromInput = {
     id?: string
     toId: string
-    toUsername: string
     createdAt?: Date | string
   }
 
@@ -9863,7 +9832,6 @@ export namespace Prisma {
 
   export type FriendRequestCreateWithoutToInput = {
     id?: string
-    toUsername: string
     createdAt?: Date | string
     from: UserCreateNestedOneWithoutSentRequestsInput
   }
@@ -9871,7 +9839,6 @@ export namespace Prisma {
   export type FriendRequestUncheckedCreateWithoutToInput = {
     id?: string
     fromId: string
-    toUsername: string
     createdAt?: Date | string
   }
 
@@ -10028,7 +9995,6 @@ export namespace Prisma {
     id?: StringFilter<"FriendRequest"> | string
     fromId?: StringFilter<"FriendRequest"> | string
     toId?: StringFilter<"FriendRequest"> | string
-    toUsername?: StringFilter<"FriendRequest"> | string
     createdAt?: DateTimeFilter<"FriendRequest"> | Date | string
   }
 
@@ -10812,14 +10778,12 @@ export namespace Prisma {
   export type FriendRequestCreateManyFromInput = {
     id?: string
     toId: string
-    toUsername: string
     createdAt?: Date | string
   }
 
   export type FriendRequestCreateManyToInput = {
     id?: string
     fromId: string
-    toUsername: string
     createdAt?: Date | string
   }
 
@@ -10858,7 +10822,6 @@ export namespace Prisma {
 
   export type FriendRequestUpdateWithoutFromInput = {
     id?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     to?: UserUpdateOneRequiredWithoutReceivedRequestsNestedInput
   }
@@ -10866,20 +10829,17 @@ export namespace Prisma {
   export type FriendRequestUncheckedUpdateWithoutFromInput = {
     id?: StringFieldUpdateOperationsInput | string
     toId?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FriendRequestUncheckedUpdateManyWithoutFromInput = {
     id?: StringFieldUpdateOperationsInput | string
     toId?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FriendRequestUpdateWithoutToInput = {
     id?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     from?: UserUpdateOneRequiredWithoutSentRequestsNestedInput
   }
@@ -10887,14 +10847,12 @@ export namespace Prisma {
   export type FriendRequestUncheckedUpdateWithoutToInput = {
     id?: StringFieldUpdateOperationsInput | string
     fromId?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FriendRequestUncheckedUpdateManyWithoutToInput = {
     id?: StringFieldUpdateOperationsInput | string
     fromId?: StringFieldUpdateOperationsInput | string
-    toUsername?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
