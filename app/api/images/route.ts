@@ -62,7 +62,16 @@ export async function GET() {
           username: true,
         },
       },
-      comments: true,
+      comments: {
+        select: {
+          id: true,
+          content: true,
+          user: {
+            select: { username: true },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      },
       favorites: true,
       likedBy: {
         select: { userId: true },
@@ -91,7 +100,14 @@ export async function GET() {
     commentCount: img.comments.length,
     favoriteCount: img.favorites.length,
     uploadedByUsername: img.uploadedBy.username,
-    isFavorited: img.favorites.some(f => f.userId === user.id)
+    isFavorited: img.favorites.some((f) => f.userId === user.id),
+    comments: img.comments.map((comment) => ({
+    id: comment.id,
+    content: comment.content,
+    user: {
+      username: comment.user.username,
+    },
+  }))
   }));
 
   return NextResponse.json(response);
@@ -119,10 +135,7 @@ export async function DELETE(req: Request) {
   });
 
   if (!image || image.uploadedById !== user.id) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 403 }
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   await imagekit.deleteFile(image.fileId);

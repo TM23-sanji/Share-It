@@ -35,55 +35,57 @@ const ImageCard = ({
   isLiked,
   isDisliked,
   isFavorited,
+  comments
 }: ImageCardProps) => {
   const [favourite, setFavourite] = useState(isFavorited);
   const [liked, setLiked] = useState<boolean>(isLiked);
   const [disliked, setDisliked] = useState<boolean>(isDisliked);
   const [showComments, setShowComments] = useState(false);
-  const comments = [
-    {
-      id: "comment-1",
-      user: {
-        name: "Sarah Johnson",
-        username: "sarahj",
-        avatar: "https://i.pravatar.cc/150?img=1",
-      },
-      content:
-        "This is a great post! I've been looking for information like this for a while.",
-      timestamp: "2023-05-14T10:23:00.000Z",
-      likes: 12,
-      replies: 2,
-      isLiked: false,
-    },
-    {
-      id: "comment-2",
-      user: {
-        name: "Mike Thompson",
-        username: "miket",
-        avatar: "https://i.pravatar.cc/150?img=2",
-      },
-      content: "Thanks for sharing! I learned a lot from this.",
-      timestamp: "2023-05-14T11:45:00.000Z",
-      likes: 8,
-      replies: 0,
-      isLiked: true,
-    },
-    {
-      id: "comment-3",
-      user: {
-        name: "Alex Rodriguez",
-        username: "alexr",
-        avatar: "https://i.pravatar.cc/150?img=3",
-      },
-      content:
-        "I have a question about the third point. Could you elaborate more on that?",
-      timestamp: "2023-05-14T12:30:00.000Z",
-      likes: 4,
-      replies: 1,
-      isLiked: false,
-    },
-  ];
-
+  // const allComments = [
+  //   {
+  //     id: "comment-1",
+  //     user: {
+  //       name: "Sarah Johnson",
+  //       username: "sarahj",
+  //       avatar: "https://i.pravatar.cc/150?img=1",
+  //     },
+  //     content:
+  //       "This is a great post! I've been looking for information like this for a while.",
+  //     timestamp: "2023-05-14T10:23:00.000Z",
+  //     likes: 12,
+  //     replies: 2,
+  //     isLiked: false,
+  //   },
+  //   {
+  //     id: "comment-2",
+  //     user: {
+  //       name: "Mike Thompson",
+  //       username: "miket",
+  //       avatar: "https://i.pravatar.cc/150?img=2",
+  //     },
+  //     content: "Thanks for sharing! I learned a lot from this.",
+  //     timestamp: "2023-05-14T11:45:00.000Z",
+  //     likes: 8,
+  //     replies: 0,
+  //     isLiked: true,
+  //   },
+  //   {
+  //     id: "comment-3",
+  //     user: {
+  //       name: "Alex Rodriguez",
+  //       username: "alexr",
+  //       avatar: "https://i.pravatar.cc/150?img=3",
+  //     },
+  //     content:
+  //       "I have a question about the third point. Could you elaborate more on that?",
+  //     timestamp: "2023-05-14T12:30:00.000Z",
+  //     likes: 4,
+  //     replies: 1,
+  //     isLiked: false,
+  //   },
+  // ];
+  const allComments = comments;
+  
   const handleDislike = async () => {
     try {
       setDisliked(true);
@@ -138,8 +140,7 @@ const ImageCard = ({
     }
   };
 
-  const handleComment = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleComment = () => {
     setShowComments((prev) => !prev);
   };
 
@@ -203,7 +204,8 @@ const ImageCard = ({
         ) : (
           <ScrollArea className="overflow-y-auto w-full h-full">
             <CommentList
-              comments={comments}
+              comments={allComments}
+              imageId={id}
               onClose={() => setShowComments(false)}
             />
           </ScrollArea>
