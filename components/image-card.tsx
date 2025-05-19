@@ -27,16 +27,17 @@ const ImageCard = ({
   id,
   src,
   alt,
-  fileId,
   fileWidth,
   fileHeight,
   onClick,
-  setImages,
   fetchFiles,
-  uploadedByUsername
+  uploadedByUsername,
+  isLiked,
+  isDisliked,
 }: ImageCardProps) => {
-  const [liked, setLiked] = useState(false);
-  const [userVote, setUserVote] = useState<"up" | "down" | null>(null);
+  const [favourite, setFavourite] = useState(false);
+  const [liked, setLiked] = useState<boolean>(isLiked);
+  const [disliked, setDisliked] = useState<boolean>(isDisliked);
   const [showComments, setShowComments] = useState(false);
   const comments = [
     {
@@ -82,32 +83,44 @@ const ImageCard = ({
     },
   ];
 
-  const handleDownvote = (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    if (userVote !== "down") {
-      setUserVote("down");
-      toast("Downvoted");
-    } else {
-      setUserVote(null); // Reset to neutral
+  const handleDislike = async () => {
+    try {
+      setDisliked(true);
+      setLiked(false);
+      if (!disliked) {
+        await fetch("/api/images/like", {
+          method: "POST",
+          body: JSON.stringify({ imageId: id, action: "dislike" }),
+        });
+        toast("Disliked :(");
+      }
+    } catch (error) {
+      console.error("Error disliking image:", error);
+      toast.error("Failed to dislike image");
     }
   };
 
-  const handleUpvote = (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    if (userVote !== "up") {
-      setUserVote("up");
-      toast.success("Upvoted!");
-    } else {
-      setUserVote(null); // Reset to neutral
+  const handleLike = async () => {
+    try {
+      setLiked(true);
+      setDisliked(false);
+      if (!liked) {
+        await fetch("/api/images/like", {
+          method: "POST",
+          body: JSON.stringify({ imageId: id, action: "like" }),
+        });
+        toast.success("Liked :)");
+      }
+    } catch (error) {
+      console.error("Error liking image:", error);
+      toast.error("Failed to like image");
     }
   };
 
-  const handleLike = (e: React.MouseEvent) => {
+  const handleFavourite = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setLiked(!liked);
-    toast.success(liked ? "Removed from favorites" : "Added to favorites");
+    setFavourite(!favourite);
+    toast.success(favourite ? "Removed from favorites" : "Added to favorites");
   };
 
   const handleComment = (e: React.MouseEvent) => {
@@ -139,25 +152,24 @@ const ImageCard = ({
     }
   };
 
-  const handleDelete = async (id:string) => {
-  try {
-    const res = await fetch("/api/images", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imageId:id }),
-    });
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch("/api/images", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageId: id }),
+      });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed to delete image");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to delete image");
 
-    // Refresh image list
-    fetchFiles();
-  } catch (err) {
-    console.error(err);
-    toast.error("Error deleting image");
-  }
-};
-
+      // Refresh image list
+      fetchFiles();
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting image");
+    }
+  };
 
   return (
     <div
@@ -165,7 +177,7 @@ const ImageCard = ({
       onClick={onClick}
     >
       <AspectRatio ratio={fileWidth / fileHeight}>
-      {!showComments ? (
+        {!showComments ? (
           <Image
             src={src}
             alt={alt}
@@ -175,12 +187,12 @@ const ImageCard = ({
           />
         ) : (
           <ScrollArea className="overflow-y-auto w-full h-full">
-          <CommentList
-            comments={comments}
-            onClose={() => setShowComments(false)}
+            <CommentList
+              comments={comments}
+              onClose={() => setShowComments(false)}
             />
-        </ScrollArea>
-      )}
+          </ScrollArea>
+        )}
       </AspectRatio>
 
       <div className="p-2 flex justify-between items-center">
@@ -189,10 +201,13 @@ const ImageCard = ({
             variant="ghost"
             size="icon"
             className="rounded-full"
-            onClick={handleLike}
+            onClick={handleFavourite}
           >
             <Heart
-              className={cn("h-5 w-5", liked ? "fill-red-500 text-black" : "")}
+              className={cn(
+                "h-5 w-5",
+                favourite ? "fill-red-500 text-black" : ""
+              )}
             />
           </Button>
 
@@ -209,12 +224,12 @@ const ImageCard = ({
             variant="ghost"
             size="icon"
             className="rounded-full"
-            onClick={handleUpvote}
+            onClick={handleLike}
           >
             <ThumbsUp
               className={cn(
                 "h-4 w-4",
-                userVote === "up" ? "fill-green-500 text-black" : ""
+                liked ? "fill-green-500 text-black" : ""
               )}
             />
           </Button>
@@ -223,12 +238,12 @@ const ImageCard = ({
             variant="ghost"
             size="icon"
             className="rounded-full"
-            onClick={handleDownvote}
+            onClick={handleDislike}
           >
             <ThumbsDown
               className={cn(
                 "h-4 w-4",
-                userVote === "down" ? "fill-red-500 text-black" : ""
+                disliked ? "fill-red-500 text-black" : ""
               )}
             />
           </Button>
