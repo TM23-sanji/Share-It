@@ -11,3 +11,5 @@
 16> After just uploading username not showing who posted
 17> Login into db then clerk 
 18> Without Images sidebar not opening
+19> Favourite then Profile, now favourite state is lost 
+20> Favourite files are not added after toggling as new image data is not fetched

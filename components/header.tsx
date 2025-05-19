@@ -19,6 +19,8 @@ import InviteFriend from "./InviteFriend";
 import ShowProfile from "./show-profile";
 import { useInviteBubbleStore } from "@/hooks/use-invite";
 import { useProfileBubbleStore } from "@/hooks/use-profile";
+import { favorite } from "@/hooks/use-favourite";
+import { Switch } from "@/components/ui/switch";
 
 const underdog = Underdog({
   subsets: ["latin"],
@@ -35,7 +37,16 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
     <header className="sticky top-0 z-10 bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between">
       <div className="flex items-center">
         {/* {isMobile && ( */}
-        <Button variant="ghost" onClick={()=>{toggleSidebar();useInviteBubbleStore.getState().setIsOpen(false);useProfileBubbleStore.getState().setIsOpen(false)}} size="icon" className="mr-2">
+        <Button
+          variant="ghost"
+          onClick={() => {
+            toggleSidebar();
+            useInviteBubbleStore.getState().setIsOpen(false);
+            useProfileBubbleStore.getState().setIsOpen(false);
+          }}
+          size="icon"
+          className="mr-2"
+        >
           <Menu className="h-5 w-5" />
         </Button>
         {/* )} */}
@@ -59,16 +70,19 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
       </div>
 
       <div className="flex items-center space-x-2">
-         <Button
+        <Button
           variant="ghost"
           className="mr-2 flex items-center gap-1 cursor-pointer"
-          onClick={()=>{useInviteBubbleStore.getState().toggleInvite(); useProfileBubbleStore.getState().setIsOpen(false)}}
+          onClick={() => {
+            useInviteBubbleStore.getState().toggleInvite();
+            useProfileBubbleStore.getState().setIsOpen(false);
+          }}
           size="sm"
         >
           <UserPlus2 className="h-4 w-4" />
         </Button>
-        <InviteFriend/>
-        <ShowProfile/>
+        <InviteFriend />
+        <ShowProfile />
 
         <Button
           variant="ghost"
@@ -92,12 +106,25 @@ const Header = ({ onUploadClick }: { onUploadClick: () => void }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuItem
-              onClick={() => {useProfileBubbleStore.getState().toggleInvite(); useInviteBubbleStore.getState().setIsOpen(false)}}
+              onClick={() => {
+                useProfileBubbleStore.getState().toggleInvite();
+                useInviteBubbleStore.getState().setIsOpen(false);
+              }}
               className={`${underdog.className}`}
             >
               Profile
             </DropdownMenuItem>
-            <DropdownMenuItem>Favourites</DropdownMenuItem>
+            <div className="flex items-center px-2 py-1">
+              <p className="text-sm">Favourites{" "}</p>
+              <Switch
+                className="cursor-pointer ml-4"
+                onClick={() => {
+                  useInviteBubbleStore.getState().setIsOpen(false);
+                  useProfileBubbleStore.getState().setIsOpen(false);
+                  favorite.getState().toggleInvite();
+                }}
+              />
+            </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
