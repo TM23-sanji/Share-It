@@ -11,5 +11,6 @@ export interface ImageType {
   isDisliked: boolean;
   commentCount: number;
   favoriteCount: number;
+  isFavorited?: boolean;
   uploadedByUsername: string;
 }

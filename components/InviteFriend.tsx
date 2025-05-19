@@ -31,12 +31,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     if (!res.ok) {
       toast.error(data.error || data.message || "Something went wrong");
     } else {
-      toast.success(
-        <>
-          <div className="font-semibold">Invitation sent!</div>
-          <div>{username} has been invited.</div>
-        </>
-      );
+      toast.success(data.message || "Friend request sent successfully");
       setUsername("");
       setIsOpen(false);
     }

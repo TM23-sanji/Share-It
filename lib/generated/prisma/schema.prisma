@@ -51,9 +51,10 @@ model Image {
   likedBy    Like[]
   dislikedBy Dislike[]
 
-  comments  Comment[]
-  favorites Favorite[] @relation("ImageFavorites")
-  createdAt DateTime   @default(now())
+  comments      Comment[]
+  favorites     Favorite[] @relation("ImageFavorites")
+  favoriteCount Int        @default(0)
+  createdAt     DateTime   @default(now())
 
   @@index([uploadedById])
 }

@@ -34,8 +34,9 @@ const ImageCard = ({
   uploadedByUsername,
   isLiked,
   isDisliked,
+  isFavorited,
 }: ImageCardProps) => {
-  const [favourite, setFavourite] = useState(false);
+  const [favourite, setFavourite] = useState(isFavorited);
   const [liked, setLiked] = useState<boolean>(isLiked);
   const [disliked, setDisliked] = useState<boolean>(isDisliked);
   const [showComments, setShowComments] = useState(false);
@@ -117,10 +118,24 @@ const ImageCard = ({
     }
   };
 
-  const handleFavourite = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setFavourite(!favourite);
-    toast.success(favourite ? "Removed from favorites" : "Added to favorites");
+  const handleFavourite = async () => {
+    try {
+      setFavourite((prev) => !prev);
+      const res = await fetch("/api/images/favorite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageId: id }),
+      });
+
+      const data = await res.json();
+      setFavourite(data.favorited);
+      toast.success(
+        favourite ? "Removed from favorites" : "Added to favorites"
+      );
+    } catch (err) {
+      console.error("Error toggling favorite", err);
+      toast.error("Failed to toggle favorite");
+    }
   };
 
   const handleComment = (e: React.MouseEvent) => {

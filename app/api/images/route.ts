@@ -91,6 +91,7 @@ export async function GET() {
     commentCount: img.comments.length,
     favoriteCount: img.favorites.length,
     uploadedByUsername: img.uploadedBy.username,
+    isFavorited: img.favorites.some(f => f.userId === user.id)
   }));
 
   return NextResponse.json(response);

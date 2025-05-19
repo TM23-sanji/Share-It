@@ -9,3 +9,5 @@
 14> DP 
 15> Accepted requested move to friends
 16> After just uploading username not showing who posted
+17> Login into db then clerk 
+18> Without Images sidebar not opening

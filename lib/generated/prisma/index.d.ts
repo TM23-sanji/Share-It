@@ -2955,6 +2955,7 @@ export namespace Prisma {
     fileHeight: number | null
     likes: number | null
     dislikes: number | null
+    favoriteCount: number | null
   }
 
   export type ImageSumAggregateOutputType = {
@@ -2962,6 +2963,7 @@ export namespace Prisma {
     fileHeight: number | null
     likes: number | null
     dislikes: number | null
+    favoriteCount: number | null
   }
 
   export type ImageMinAggregateOutputType = {
@@ -2974,6 +2976,7 @@ export namespace Prisma {
     uploadedById: string | null
     likes: number | null
     dislikes: number | null
+    favoriteCount: number | null
     createdAt: Date | null
   }
 
@@ -2987,6 +2990,7 @@ export namespace Prisma {
     uploadedById: string | null
     likes: number | null
     dislikes: number | null
+    favoriteCount: number | null
     createdAt: Date | null
   }
 
@@ -3000,6 +3004,7 @@ export namespace Prisma {
     uploadedById: number
     likes: number
     dislikes: number
+    favoriteCount: number
     createdAt: number
     _all: number
   }
@@ -3010,6 +3015,7 @@ export namespace Prisma {
     fileHeight?: true
     likes?: true
     dislikes?: true
+    favoriteCount?: true
   }
 
   export type ImageSumAggregateInputType = {
@@ -3017,6 +3023,7 @@ export namespace Prisma {
     fileHeight?: true
     likes?: true
     dislikes?: true
+    favoriteCount?: true
   }
 
   export type ImageMinAggregateInputType = {
@@ -3029,6 +3036,7 @@ export namespace Prisma {
     uploadedById?: true
     likes?: true
     dislikes?: true
+    favoriteCount?: true
     createdAt?: true
   }
 
@@ -3042,6 +3050,7 @@ export namespace Prisma {
     uploadedById?: true
     likes?: true
     dislikes?: true
+    favoriteCount?: true
     createdAt?: true
   }
 
@@ -3055,6 +3064,7 @@ export namespace Prisma {
     uploadedById?: true
     likes?: true
     dislikes?: true
+    favoriteCount?: true
     createdAt?: true
     _all?: true
   }
@@ -3155,6 +3165,7 @@ export namespace Prisma {
     uploadedById: string
     likes: number
     dislikes: number
+    favoriteCount: number
     createdAt: Date
     _count: ImageCountAggregateOutputType | null
     _avg: ImageAvgAggregateOutputType | null
@@ -3187,6 +3198,7 @@ export namespace Prisma {
     uploadedById?: boolean
     likes?: boolean
     dislikes?: boolean
+    favoriteCount?: boolean
     createdAt?: boolean
     uploadedBy?: boolean | UserDefaultArgs<ExtArgs>
     likedBy?: boolean | Image$likedByArgs<ExtArgs>
@@ -3206,6 +3218,7 @@ export namespace Prisma {
     uploadedById?: boolean
     likes?: boolean
     dislikes?: boolean
+    favoriteCount?: boolean
     createdAt?: boolean
     uploadedBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["image"]>
@@ -3220,6 +3233,7 @@ export namespace Prisma {
     uploadedById?: boolean
     likes?: boolean
     dislikes?: boolean
+    favoriteCount?: boolean
     createdAt?: boolean
     uploadedBy?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["image"]>
@@ -3234,10 +3248,11 @@ export namespace Prisma {
     uploadedById?: boolean
     likes?: boolean
     dislikes?: boolean
+    favoriteCount?: boolean
     createdAt?: boolean
   }
 
-  export type ImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "alt" | "fileId" | "fileWidth" | "fileHeight" | "uploadedById" | "likes" | "dislikes" | "createdAt", ExtArgs["result"]["image"]>
+  export type ImageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "alt" | "fileId" | "fileWidth" | "fileHeight" | "uploadedById" | "likes" | "dislikes" | "favoriteCount" | "createdAt", ExtArgs["result"]["image"]>
   export type ImageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     uploadedBy?: boolean | UserDefaultArgs<ExtArgs>
     likedBy?: boolean | Image$likedByArgs<ExtArgs>
@@ -3272,6 +3287,7 @@ export namespace Prisma {
       uploadedById: string
       likes: number
       dislikes: number
+      favoriteCount: number
       createdAt: Date
     }, ExtArgs["result"]["image"]>
     composites: {}
@@ -3710,6 +3726,7 @@ export namespace Prisma {
     readonly uploadedById: FieldRef<"Image", 'String'>
     readonly likes: FieldRef<"Image", 'Int'>
     readonly dislikes: FieldRef<"Image", 'Int'>
+    readonly favoriteCount: FieldRef<"Image", 'Int'>
     readonly createdAt: FieldRef<"Image", 'DateTime'>
   }
     
@@ -10585,6 +10602,7 @@ export namespace Prisma {
     uploadedById: 'uploadedById',
     likes: 'likes',
     dislikes: 'dislikes',
+    favoriteCount: 'favoriteCount',
     createdAt: 'createdAt'
   };
 
@@ -10822,6 +10840,7 @@ export namespace Prisma {
     uploadedById?: StringFilter<"Image"> | string
     likes?: IntFilter<"Image"> | number
     dislikes?: IntFilter<"Image"> | number
+    favoriteCount?: IntFilter<"Image"> | number
     createdAt?: DateTimeFilter<"Image"> | Date | string
     uploadedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     likedBy?: LikeListRelationFilter
@@ -10840,6 +10859,7 @@ export namespace Prisma {
     uploadedById?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
+    favoriteCount?: SortOrder
     createdAt?: SortOrder
     uploadedBy?: UserOrderByWithRelationInput
     likedBy?: LikeOrderByRelationAggregateInput
@@ -10861,6 +10881,7 @@ export namespace Prisma {
     uploadedById?: StringFilter<"Image"> | string
     likes?: IntFilter<"Image"> | number
     dislikes?: IntFilter<"Image"> | number
+    favoriteCount?: IntFilter<"Image"> | number
     createdAt?: DateTimeFilter<"Image"> | Date | string
     uploadedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     likedBy?: LikeListRelationFilter
@@ -10879,6 +10900,7 @@ export namespace Prisma {
     uploadedById?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
+    favoriteCount?: SortOrder
     createdAt?: SortOrder
     _count?: ImageCountOrderByAggregateInput
     _avg?: ImageAvgOrderByAggregateInput
@@ -10900,6 +10922,7 @@ export namespace Prisma {
     uploadedById?: StringWithAggregatesFilter<"Image"> | string
     likes?: IntWithAggregatesFilter<"Image"> | number
     dislikes?: IntWithAggregatesFilter<"Image"> | number
+    favoriteCount?: IntWithAggregatesFilter<"Image"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Image"> | Date | string
   }
 
@@ -11317,6 +11340,7 @@ export namespace Prisma {
     fileHeight?: number | null
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     uploadedBy: UserCreateNestedOneWithoutImagesInput
     likedBy?: LikeCreateNestedManyWithoutImageInput
@@ -11335,6 +11359,7 @@ export namespace Prisma {
     uploadedById: string
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     likedBy?: LikeUncheckedCreateNestedManyWithoutImageInput
     dislikedBy?: DislikeUncheckedCreateNestedManyWithoutImageInput
@@ -11351,6 +11376,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadedBy?: UserUpdateOneRequiredWithoutImagesNestedInput
     likedBy?: LikeUpdateManyWithoutImageNestedInput
@@ -11369,6 +11395,7 @@ export namespace Prisma {
     uploadedById?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likedBy?: LikeUncheckedUpdateManyWithoutImageNestedInput
     dislikedBy?: DislikeUncheckedUpdateManyWithoutImageNestedInput
@@ -11386,6 +11413,7 @@ export namespace Prisma {
     uploadedById: string
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
   }
 
@@ -11398,6 +11426,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -11411,6 +11440,7 @@ export namespace Prisma {
     uploadedById?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -11892,6 +11922,7 @@ export namespace Prisma {
     uploadedById?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
+    favoriteCount?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -11900,6 +11931,7 @@ export namespace Prisma {
     fileHeight?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
+    favoriteCount?: SortOrder
   }
 
   export type ImageMaxOrderByAggregateInput = {
@@ -11912,6 +11944,7 @@ export namespace Prisma {
     uploadedById?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
+    favoriteCount?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -11925,6 +11958,7 @@ export namespace Prisma {
     uploadedById?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
+    favoriteCount?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -11933,6 +11967,7 @@ export namespace Prisma {
     fileHeight?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
+    favoriteCount?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13169,6 +13204,7 @@ export namespace Prisma {
     fileHeight?: number | null
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     likedBy?: LikeCreateNestedManyWithoutImageInput
     dislikedBy?: DislikeCreateNestedManyWithoutImageInput
@@ -13185,6 +13221,7 @@ export namespace Prisma {
     fileHeight?: number | null
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     likedBy?: LikeUncheckedCreateNestedManyWithoutImageInput
     dislikedBy?: DislikeUncheckedCreateNestedManyWithoutImageInput
@@ -13405,6 +13442,7 @@ export namespace Prisma {
     uploadedById?: StringFilter<"Image"> | string
     likes?: IntFilter<"Image"> | number
     dislikes?: IntFilter<"Image"> | number
+    favoriteCount?: IntFilter<"Image"> | number
     createdAt?: DateTimeFilter<"Image"> | Date | string
   }
 
@@ -13781,6 +13819,7 @@ export namespace Prisma {
     fileHeight?: number | null
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     uploadedBy: UserCreateNestedOneWithoutImagesInput
     dislikedBy?: DislikeCreateNestedManyWithoutImageInput
@@ -13798,6 +13837,7 @@ export namespace Prisma {
     uploadedById: string
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     dislikedBy?: DislikeUncheckedCreateNestedManyWithoutImageInput
     comments?: CommentUncheckedCreateNestedManyWithoutImageInput
@@ -13868,6 +13908,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadedBy?: UserUpdateOneRequiredWithoutImagesNestedInput
     dislikedBy?: DislikeUpdateManyWithoutImageNestedInput
@@ -13885,6 +13926,7 @@ export namespace Prisma {
     uploadedById?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dislikedBy?: DislikeUncheckedUpdateManyWithoutImageNestedInput
     comments?: CommentUncheckedUpdateManyWithoutImageNestedInput
@@ -13933,6 +13975,7 @@ export namespace Prisma {
     fileHeight?: number | null
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     uploadedBy: UserCreateNestedOneWithoutImagesInput
     likedBy?: LikeCreateNestedManyWithoutImageInput
@@ -13950,6 +13993,7 @@ export namespace Prisma {
     uploadedById: string
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     likedBy?: LikeUncheckedCreateNestedManyWithoutImageInput
     comments?: CommentUncheckedCreateNestedManyWithoutImageInput
@@ -14020,6 +14064,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadedBy?: UserUpdateOneRequiredWithoutImagesNestedInput
     likedBy?: LikeUpdateManyWithoutImageNestedInput
@@ -14037,6 +14082,7 @@ export namespace Prisma {
     uploadedById?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likedBy?: LikeUncheckedUpdateManyWithoutImageNestedInput
     comments?: CommentUncheckedUpdateManyWithoutImageNestedInput
@@ -14052,6 +14098,7 @@ export namespace Prisma {
     fileHeight?: number | null
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     uploadedBy: UserCreateNestedOneWithoutImagesInput
     likedBy?: LikeCreateNestedManyWithoutImageInput
@@ -14069,6 +14116,7 @@ export namespace Prisma {
     uploadedById: string
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     likedBy?: LikeUncheckedCreateNestedManyWithoutImageInput
     dislikedBy?: DislikeUncheckedCreateNestedManyWithoutImageInput
@@ -14133,6 +14181,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadedBy?: UserUpdateOneRequiredWithoutImagesNestedInput
     likedBy?: LikeUpdateManyWithoutImageNestedInput
@@ -14150,6 +14199,7 @@ export namespace Prisma {
     uploadedById?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likedBy?: LikeUncheckedUpdateManyWithoutImageNestedInput
     dislikedBy?: DislikeUncheckedUpdateManyWithoutImageNestedInput
@@ -14237,6 +14287,7 @@ export namespace Prisma {
     fileHeight?: number | null
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     uploadedBy: UserCreateNestedOneWithoutImagesInput
     likedBy?: LikeCreateNestedManyWithoutImageInput
@@ -14254,6 +14305,7 @@ export namespace Prisma {
     uploadedById: string
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
     likedBy?: LikeUncheckedCreateNestedManyWithoutImageInput
     dislikedBy?: DislikeUncheckedCreateNestedManyWithoutImageInput
@@ -14324,6 +14376,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     uploadedBy?: UserUpdateOneRequiredWithoutImagesNestedInput
     likedBy?: LikeUpdateManyWithoutImageNestedInput
@@ -14341,6 +14394,7 @@ export namespace Prisma {
     uploadedById?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likedBy?: LikeUncheckedUpdateManyWithoutImageNestedInput
     dislikedBy?: DislikeUncheckedUpdateManyWithoutImageNestedInput
@@ -14668,6 +14722,7 @@ export namespace Prisma {
     fileHeight?: number | null
     likes?: number
     dislikes?: number
+    favoriteCount?: number
     createdAt?: Date | string
   }
 
@@ -14777,6 +14832,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likedBy?: LikeUpdateManyWithoutImageNestedInput
     dislikedBy?: DislikeUpdateManyWithoutImageNestedInput
@@ -14793,6 +14849,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     likedBy?: LikeUncheckedUpdateManyWithoutImageNestedInput
     dislikedBy?: DislikeUncheckedUpdateManyWithoutImageNestedInput
@@ -14809,6 +14866,7 @@ export namespace Prisma {
     fileHeight?: NullableIntFieldUpdateOperationsInput | number | null
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
+    favoriteCount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
