@@ -8,3 +8,4 @@
 13> Verify human flow out of div
 14> DP 
 15> Accepted requested move to friends
+16> After just uploading username not showing who posted

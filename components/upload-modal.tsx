@@ -26,8 +26,8 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (!file.type.includes("image/") && !file.type.includes("video/")) {
-        toast.error("Please select an image or video file");
+      if (!file.type.includes("image/")) {
+        toast.error("Please select an image file");
         return;
       }
 
@@ -44,8 +44,8 @@ const UploadModal = ({ isOpen, onClose, onUpload }: UploadModalProps) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
     if (file) {
-      if (!file.type.includes("image/") && !file.type.includes("video/")) {
-        toast.error("Please select an image or video file");
+      if (!file.type.includes("image/")) {
+        toast.error("Please select an image file");
         return;
       }
 

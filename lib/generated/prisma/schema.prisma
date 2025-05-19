@@ -29,18 +29,55 @@ model User {
   images    Image[]    @relation("UserImages")
   comments  Comment[]  @relation("UserComments")
   favorites Favorite[]
+
+  likes    Like[]    @relation("UserLikes")
+  dislikes Dislike[] @relation("UserDislikes")
 }
 
 model Image {
-  id           String     @id @default(cuid())
-  url          String
-  uploadedBy   User       @relation("UserImages", fields: [uploadedById], references: [id])
+  id         String  @id @default(cuid())
+  url        String
+  alt        String?
+  fileId     String
+  fileWidth  Int?
+  fileHeight Int?
+
+  uploadedBy   User   @relation("UserImages", fields: [uploadedById], references: [id])
   uploadedById String
-  likes        Int        @default(0)
-  dislikes     Int        @default(0)
-  comments     Comment[]
-  favorites    Favorite[] @relation("ImageFavorites")
-  createdAt    DateTime   @default(now())
+
+  likes    Int @default(0)
+  dislikes Int @default(0)
+
+  likedBy    Like[]
+  dislikedBy Dislike[]
+
+  comments  Comment[]
+  favorites Favorite[] @relation("ImageFavorites")
+  createdAt DateTime   @default(now())
+
+  @@index([uploadedById])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  user      User     @relation("UserLikes", fields: [userId], references: [id]) // ✅ named relation
+  userId    String
+  image     Image    @relation(fields: [imageId], references: [id])
+  imageId   String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, imageId])
+}
+
+model Dislike {
+  id        String   @id @default(cuid())
+  user      User     @relation("UserDislikes", fields: [userId], references: [id]) // ✅ named relation
+  userId    String
+  image     Image    @relation(fields: [imageId], references: [id])
+  imageId   String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, imageId])
 }
 
 model Comment {

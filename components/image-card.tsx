@@ -12,22 +12,19 @@ import CommentList from "@/components/commentList";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import type { Image as ImageType } from "@/app/page";
+// import type { Image as ImageType } from "@/app/page";
+import { ImageType } from "@/lib/types";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface ImageCardProps {
-  src: string;
-  alt: string;
-  fileId: string;
-  fileWidth: number;
-  fileHeight: number;
+interface ImageCardProps extends ImageType {
   onClick?: () => void;
   setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
   fetchFiles: () => void;
 }
 
 const ImageCard = ({
+  id,
   src,
   alt,
   fileId,
@@ -36,6 +33,7 @@ const ImageCard = ({
   onClick,
   setImages,
   fetchFiles,
+  uploadedByUsername
 }: ImageCardProps) => {
   const [liked, setLiked] = useState(false);
   const [userVote, setUserVote] = useState<"up" | "down" | null>(null);
@@ -141,29 +139,25 @@ const ImageCard = ({
     }
   };
 
-  const handleDelete = async (e: React.MouseEvent, fileId: string) => {
-    e.stopPropagation();
-    try {
-      const res = await fetch("/api/delete-image", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileId }),
-      });
+  const handleDelete = async (id:string) => {
+  try {
+    const res = await fetch("/api/images", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imageId:id }),
+    });
 
-      if (!res.ok) throw new Error("Failed to delete");
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to delete image");
 
-      setImages(
-        (prev: ImageType[]) =>
-          prev?.filter((img: ImageType) => img.fileId !== fileId) || []
-      );
-      toast.success("Image deleted successfully");
-      fetchFiles();
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to delete image");
-      fetchFiles();
-    }
-  };
+    // Refresh image list
+    fetchFiles();
+  } catch (err) {
+    console.error(err);
+    toast.error("Error deleting image");
+  }
+};
+
 
   return (
     <div
@@ -251,8 +245,8 @@ const ImageCard = ({
           </div>
 
           <div
-            onClick={(e) => {
-              handleDelete(e, fileId);
+            onClick={() => {
+              handleDelete(id);
             }}
             className="pr-3"
           >
@@ -262,7 +256,7 @@ const ImageCard = ({
       </div>
 
       <div className="pr-5 text-end pb-0 text-sm font-medium text-gray-800">
-        - Monkey D. Luffy
+        - {uploadedByUsername}
       </div>
     </div>
   );
