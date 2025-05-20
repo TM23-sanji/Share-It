@@ -24,3 +24,37 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ comment });
 }
+
+export async function GET(req: Request) {
+  const user = await currentUser();
+  if (!user) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(req.url);
+  const imageId = searchParams.get("imageId");
+
+  if (!imageId) {
+    return NextResponse.json({ error: "Missing imageId" }, { status: 400 });
+  }
+
+  const comments = await prisma.comment.findMany({
+    where: { imageId },
+    include: {
+      user: {
+        select: { username: true },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  const formatted = comments.map((comment) => ({
+    id: comment.id,
+    content: comment.content,
+    user: {
+      username: comment.user.username,
+    },
+  }));
+
+  return NextResponse.json(formatted);
+}

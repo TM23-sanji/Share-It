@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 // import type { Image as ImageType } from "@/app/page";
-import { ImageType } from "@/lib/types";
+import { ImageType, Comment } from "@/lib/types";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -35,57 +35,29 @@ const ImageCard = ({
   isLiked,
   isDisliked,
   isFavorited,
-  comments
+  comments,
 }: ImageCardProps) => {
   const [favourite, setFavourite] = useState(isFavorited);
   const [liked, setLiked] = useState<boolean>(isLiked);
   const [disliked, setDisliked] = useState<boolean>(isDisliked);
   const [showComments, setShowComments] = useState(false);
-  // const allComments = [
-  //   {
-  //     id: "comment-1",
-  //     user: {
-  //       name: "Sarah Johnson",
-  //       username: "sarahj",
-  //       avatar: "https://i.pravatar.cc/150?img=1",
-  //     },
-  //     content:
-  //       "This is a great post! I've been looking for information like this for a while.",
-  //     timestamp: "2023-05-14T10:23:00.000Z",
-  //     likes: 12,
-  //     replies: 2,
-  //     isLiked: false,
-  //   },
-  //   {
-  //     id: "comment-2",
-  //     user: {
-  //       name: "Mike Thompson",
-  //       username: "miket",
-  //       avatar: "https://i.pravatar.cc/150?img=2",
-  //     },
-  //     content: "Thanks for sharing! I learned a lot from this.",
-  //     timestamp: "2023-05-14T11:45:00.000Z",
-  //     likes: 8,
-  //     replies: 0,
-  //     isLiked: true,
-  //   },
-  //   {
-  //     id: "comment-3",
-  //     user: {
-  //       name: "Alex Rodriguez",
-  //       username: "alexr",
-  //       avatar: "https://i.pravatar.cc/150?img=3",
-  //     },
-  //     content:
-  //       "I have a question about the third point. Could you elaborate more on that?",
-  //     timestamp: "2023-05-14T12:30:00.000Z",
-  //     likes: 4,
-  //     replies: 1,
-  //     isLiked: false,
-  //   },
-  // ];
-  const allComments = comments;
-  
+  const [allComments, setAllComments] = useState<Comment[]>(comments);
+  // const allComments = comments;
+
+  const fetchComments = async () => {
+    try {
+      const res = await fetch(`/api/images/comment?imageId=${id}`);
+      const data = await res.json();
+      if (res.ok) {        
+        setAllComments(data);
+      } else {
+        console.error(data.error);
+      }
+    } catch (err) {
+      console.error("Failed to fetch comments", err);
+    }
+  };
+
   const handleDislike = async () => {
     try {
       setDisliked(true);
@@ -141,6 +113,7 @@ const ImageCard = ({
   };
 
   const handleComment = () => {
+    if (!showComments) fetchComments(); // Fetch only on open
     setShowComments((prev) => !prev);
   };
 

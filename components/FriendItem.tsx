@@ -39,7 +39,7 @@ const FriendItem = ({ name, isOnline }: FriendItemProps) => {
   if (removed) return null;
 
   return (
-    <div className="flex items-center justify-between p-3 pr-0 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors">
+    <div className="flex items-center justify-between p-3 pl-1 pr-0 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors">
       <div className="flex items-center">
         <Circle
           className={cn(

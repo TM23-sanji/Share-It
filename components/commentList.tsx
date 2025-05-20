@@ -8,6 +8,7 @@ import { X, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import type { Comment } from "@/lib/types";
+import { toast } from "sonner";
 
 interface CommentListProps {
   comments: Comment[];
@@ -75,6 +76,7 @@ const commentList: React.FC<CommentListProps> = ({
 
       // setVisibleComments((prev) => [newCommentObj.id, ...prev]);
       setNewComment("");
+      toast.success("Comment posted!");
     } catch (error) {
       console.error("Error posting comment", error);
     }
