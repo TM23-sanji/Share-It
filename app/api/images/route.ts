@@ -33,6 +33,7 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
+  try{
   const user = await currentUser();
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
@@ -111,6 +112,10 @@ export async function GET() {
   }));
 
   return NextResponse.json(response);
+} catch(error) {
+    console.error("Error fetching images:", error);
+    return NextResponse.json({ error: "Failed to fetch images" }, { status: 500 });
+  }
 }
 
 export async function DELETE(req: Request) {
