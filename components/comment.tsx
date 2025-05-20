@@ -11,7 +11,7 @@ export interface CommentProps {
   };
 }
 
-const comment: React.FC<CommentProps> = ({ user, content }) => {
+const Comment: React.FC<CommentProps> = ({ user, content }) => {
   const { user: currentUser } = useUser();
   const avatarUrl = currentUser?.imageUrl;
 
@@ -38,4 +38,4 @@ const comment: React.FC<CommentProps> = ({ user, content }) => {
   );
 };
 
-export default comment;
+export default Comment;

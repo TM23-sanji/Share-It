@@ -81,7 +81,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Already friends" }, { status: 200 });
     }
 
-    const requestCreated = await prisma.friendRequest.create({
+    await prisma.friendRequest.create({
       data: {
         fromId: user.id,
         toId: recipient.id,

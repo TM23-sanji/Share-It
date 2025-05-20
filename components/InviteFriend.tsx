@@ -35,10 +35,15 @@ const handleSubmit = async (e: React.FormEvent) => {
       setUsername("");
       setIsOpen(false);
     }
-  } catch (err: any) {
-    console.error(err);
-    toast.error(err.message || "Unexpected error occurred");
-  } finally {
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+        console.error(err);
+        toast.error(err.message || "Unexpected error occurred");
+    } else {
+        console.error("Unexpected error", err);
+        toast.error("Unexpected error occurred");
+    }
+} finally {
     setIsSubmitting(false);
   }
 };

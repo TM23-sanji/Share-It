@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import CommentComponent from "./comment";
-import { CommentProps } from "./comment";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -16,7 +15,7 @@ interface CommentListProps {
   onClose: () => void;
 }
 
-const commentList: React.FC<CommentListProps> = ({
+const CommentList: React.FC<CommentListProps> = ({
   comments: initialComments,
   onClose,
   imageId,
@@ -142,4 +141,4 @@ const commentList: React.FC<CommentListProps> = ({
   );
 };
 
-export default commentList;
+export default CommentList;

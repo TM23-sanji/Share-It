@@ -48,7 +48,7 @@ const ImageCard = ({
     try {
       const res = await fetch(`/api/images/comment?imageId=${id}`);
       const data = await res.json();
-      if (res.ok) {        
+      if (res.ok) {
         setAllComments(data);
       } else {
         console.error(data.error);
@@ -170,9 +170,11 @@ const ImageCard = ({
           <Image
             src={src}
             alt={alt}
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: "cover" }}
             className="w-full h-full"
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
           <ScrollArea className="overflow-y-auto w-full h-full">

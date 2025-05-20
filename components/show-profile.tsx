@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { User, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useProfileBubbleStore } from "@/hooks/use-profile";
 import { useUser } from "@clerk/nextjs";
 
-const showProfile = () => {
+const ShowProfile = () => {
   const router = useRouter();
   const isOpen = useProfileBubbleStore((state) => state.isOpen);
-  const setIsOpen = useProfileBubbleStore((state) => state.setIsOpen);
     const { user } = useUser();
     const profile = {
       name: user?.username || "Guest",
@@ -116,4 +114,4 @@ const showProfile = () => {
   );
 };
 
-export default showProfile;
+export default ShowProfile;
