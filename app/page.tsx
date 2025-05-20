@@ -23,6 +23,13 @@ const Index = () => {
     try {
       setLoading(true);
       const resImage = await fetch("/api/images");
+      if (!resImage.ok) {
+        const errData = await resImage.json();
+        console.error("Server error:", errData.error);
+        toast.error(errData.error || "Unknown error");
+        return;
+      }
+
       const imageData: ImageType[] = await resImage.json();
       setImages(imageData);
     } catch (err) {
