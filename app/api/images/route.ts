@@ -35,97 +35,106 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  try{
+  try {
     console.log(5);
-  const user = await currentUser();
-  console.log(6);
+    const user = await currentUser();
+    console.log(6);
 
-  if (!user) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-  }
-  console.log(7);
+    if (!user) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+    console.log(7);
 
-  const friendships = await prisma.friendship.findMany({
-    where: {
-      OR: [{ user1Id: user.id }, { user2Id: user.id }],
-    },
-  });
-  console.log(8);
-
-  const friendIds = friendships.map((f) =>
-    f.user1Id === user.id ? f.user2Id : f.user1Id
-  );
-  console.log(9);
-
-  const imageUsers = [user.id, ...friendIds];
-  console.log(10);
-
-  const images = await prisma.image.findMany({
-    where: {
-      uploadedById: {
-        in: imageUsers,
-      },
-    },
-    include: {
-      uploadedBy: {
-        select: {
-          username: true,
+    try {
+      const friendships = await prisma.friendship.findMany({
+        where: {
+          OR: [{ user1Id: user.id }, { user2Id: user.id }],
         },
-      },
-      comments: {
-        select: {
-          id: true,
-          content: true,
-          user: {
-            select: { username: true },
+      });
+      console.log("✅ friendships fetched", friendships.length);
+      const friendIds = friendships.map((f) =>
+        f.user1Id === user.id ? f.user2Id : f.user1Id
+      );
+      console.log(9);
+
+      const imageUsers = [user.id, ...friendIds];
+      console.log(10);
+      const images = await prisma.image.findMany({
+        where: {
+          uploadedById: {
+            in: imageUsers,
           },
         },
-        orderBy: { createdAt: "desc" },
-      },
-      favorites: true,
-      likedBy: {
-        select: { userId: true },
-      },
-      dislikedBy: {
-        select: { userId: true },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  console.log(11);
+        include: {
+          uploadedBy: {
+            select: {
+              username: true,
+            },
+          },
+          comments: {
+            select: {
+              id: true,
+              content: true,
+              user: {
+                select: { username: true },
+              },
+            },
+            orderBy: { createdAt: "desc" },
+          },
+          favorites: true,
+          likedBy: {
+            select: { userId: true },
+          },
+          dislikedBy: {
+            select: { userId: true },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      console.log(11);
+      const response = images.map((img) => ({
+        id: img.id,
+        src: img.url,
+        alt: img.alt,
+        fileId: img.fileId,
+        fileWidth: img.fileWidth,
+        fileHeight: img.fileHeight,
+        likes: img.likes,
+        dislikes: img.dislikes,
+        isLiked: img.likedBy.some((l) => l.userId === user.id),
+        isDisliked: img.dislikedBy.some((d) => d.userId === user.id),
+        commentCount: img.comments.length,
+        favoriteCount: img.favorites.length,
+        uploadedByUsername: img.uploadedBy.username,
+        isFavorited: img.favorites.some((f) => f.userId === user.id),
+        comments: img.comments.map((comment) => ({
+          id: comment.id,
+          content: comment.content,
+          user: {
+            username: comment.user.username,
+          },
+        })),
+      }));
+      console.log(12);
 
-  // 🛠️ Transform the Prisma objects into frontend-friendly shape
-  const response = images.map((img) => ({
-    id: img.id,
-    src: img.url,
-    alt: img.alt,
-    fileId: img.fileId,
-    fileWidth: img.fileWidth,
-    fileHeight: img.fileHeight,
-    likes: img.likes,
-    dislikes: img.dislikes,
-    isLiked: img.likedBy.some((l) => l.userId === user.id),
-    isDisliked: img.dislikedBy.some((d) => d.userId === user.id),
-    commentCount: img.comments.length,
-    favoriteCount: img.favorites.length,
-    uploadedByUsername: img.uploadedBy.username,
-    isFavorited: img.favorites.some((f) => f.userId === user.id),
-    comments: img.comments.map((comment) => ({
-    id: comment.id,
-    content: comment.content,
-    user: {
-      username: comment.user.username,
-    },
-  }))
-  }));
-  console.log(12);
+      return NextResponse.json(response);
+    } catch (e) {
+      console.error("❌ Error in friendships query", e);
+      return NextResponse.json(
+        { error: "DB error on friendships" },
+        { status: 500 }
+      );
+    }
 
-  return NextResponse.json(response);
-} catch(error) {
+    // 🛠️ Transform the Prisma objects into frontend-friendly shape
+  } catch (error) {
     console.error("Error fetching images:", error);
-    return NextResponse.json({ error: "Failed to fetch images" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch images" },
+      { status: 500 }
+    );
   }
 }
 
