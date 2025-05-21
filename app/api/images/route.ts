@@ -46,6 +46,8 @@ export async function GET() {
     console.log(7);
 
     try {
+      console.log(prisma? "Exists" : "Does not exist");
+      console.log(prisma.friendship? "True" : "False");
       const friendships = await prisma.friendship.findMany({
         where: {
           OR: [{ user1Id: user.id }, { user2Id: user.id }],
