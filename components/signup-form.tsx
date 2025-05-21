@@ -257,11 +257,6 @@ export function SignUpForm({
                   {isSubmitting ? "Creating account..." : "Create Account"}
                 </Button>
               </div>
-              {isSubmitting && (
-                <div className="flex justify-center-safe">
-                  <div id="clerk-captcha" />
-                </div>
-              )}
               <div className="text-center text-sm">
                 Already have an account?{" "}
                 <span

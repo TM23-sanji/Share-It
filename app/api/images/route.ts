@@ -61,6 +61,7 @@ export async function GET() {
 
       const imageUsers = [user.id, ...friendIds];
       console.log(10);
+      console.log(imageUsers)
       const images = await prisma.image.findMany({
         where: {
           uploadedById: {

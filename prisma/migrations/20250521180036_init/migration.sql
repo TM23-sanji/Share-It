@@ -11,12 +11,37 @@ CREATE TABLE "User" (
 CREATE TABLE "Image" (
     "id" TEXT NOT NULL,
     "url" TEXT NOT NULL,
+    "alt" TEXT,
+    "fileId" TEXT NOT NULL,
+    "fileWidth" INTEGER,
+    "fileHeight" INTEGER,
     "uploadedById" TEXT NOT NULL,
     "likes" INTEGER NOT NULL DEFAULT 0,
     "dislikes" INTEGER NOT NULL DEFAULT 0,
+    "favoriteCount" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Image_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Like" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "imageId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Like_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Dislike" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "imageId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Dislike_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -45,7 +70,6 @@ CREATE TABLE "FriendRequest" (
     "id" TEXT NOT NULL,
     "fromId" TEXT NOT NULL,
     "toId" TEXT NOT NULL,
-    "toUsername" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "FriendRequest_pkey" PRIMARY KEY ("id")
@@ -68,6 +92,15 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE INDEX "Image_uploadedById_idx" ON "Image"("uploadedById");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Like_userId_imageId_key" ON "Like"("userId", "imageId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Dislike_userId_imageId_key" ON "Dislike"("userId", "imageId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Favorite_userId_imageId_key" ON "Favorite"("userId", "imageId");
 
 -- CreateIndex
@@ -75,6 +108,18 @@ CREATE UNIQUE INDEX "Friendship_user1Id_user2Id_key" ON "Friendship"("user1Id", 
 
 -- AddForeignKey
 ALTER TABLE "Image" ADD CONSTRAINT "Image_uploadedById_fkey" FOREIGN KEY ("uploadedById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Like" ADD CONSTRAINT "Like_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Like" ADD CONSTRAINT "Like_imageId_fkey" FOREIGN KEY ("imageId") REFERENCES "Image"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Dislike" ADD CONSTRAINT "Dislike_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Dislike" ADD CONSTRAINT "Dislike_imageId_fkey" FOREIGN KEY ("imageId") REFERENCES "Image"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_imageId_fkey" FOREIGN KEY ("imageId") REFERENCES "Image"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

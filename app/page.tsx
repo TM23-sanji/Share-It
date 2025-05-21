@@ -35,6 +35,7 @@ const Index = () => {
 
       const imageData: ImageType[] = await resImage.json();
       setImages(imageData);
+      console.log(imageData)
     } catch (err) {
       console.error("Failed to load images", err);
       toast.error("Failed to load images");
