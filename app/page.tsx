@@ -22,7 +22,10 @@ const Index = () => {
   const fetchFiles = async () => {
     try {
       setLoading(true);
+      console.log(1);
       const resImage = await fetch("/api/images");
+      console.log(2);
+      
       if (!resImage.ok) {
         const errData = await resImage.json();
         console.error("Server error:", errData.error);

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+console.log(3);
 import { prisma } from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
+console.log(4);
 import ImageKit from "imagekit";
 
 export async function POST(req: Request) {
@@ -34,22 +36,29 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try{
+    console.log(5);
   const user = await currentUser();
+  console.log(6);
+
   if (!user) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
+  console.log(7);
 
   const friendships = await prisma.friendship.findMany({
     where: {
       OR: [{ user1Id: user.id }, { user2Id: user.id }],
     },
   });
+  console.log(8);
 
   const friendIds = friendships.map((f) =>
     f.user1Id === user.id ? f.user2Id : f.user1Id
   );
+  console.log(9);
 
   const imageUsers = [user.id, ...friendIds];
+  console.log(10);
 
   const images = await prisma.image.findMany({
     where: {
@@ -85,6 +94,7 @@ export async function GET() {
       createdAt: "desc",
     },
   });
+  console.log(11);
 
   // 🛠️ Transform the Prisma objects into frontend-friendly shape
   const response = images.map((img) => ({
@@ -110,6 +120,7 @@ export async function GET() {
     },
   }))
   }));
+  console.log(12);
 
   return NextResponse.json(response);
 } catch(error) {
