@@ -47,6 +47,7 @@ export async function GET() {
 
     try {
       console.log(prisma? "Exists" : "Does not exist");
+      console.log(Object.keys(prisma));
       console.log(prisma.friendship? "True" : "False");
       const friendships = await prisma.friendship.findMany({
         where: {
