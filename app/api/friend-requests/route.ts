@@ -4,18 +4,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function OPTIONS() {
-  return NextResponse.json({}, {
-    status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
-}
-
-
 export async function GET() {
   const user = await currentUser();
   if (!user) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
